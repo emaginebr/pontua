@@ -1,0 +1,169 @@
+/* =============================================================================
+   Pontua — mapeamento dos tokens para o Tailwind CSS 4
+   CÓPIA de docs/design/tailwind-theme.css (T010) — não editar aqui.
+   Importado DEPOIS de tokens.css em src/index.css.
+   `inline` faz o Tailwind emitir var(--pt-…) nos utilitários, então os valores
+   continuam vindo de tokens.css (fonte única; inclui o @media reduced-motion).
+   ============================================================================= */
+
+@theme inline {
+  /* Zera a paleta padrão do Tailwind: só cores do Pontua (evita "blue-500" avulso). */
+  --color-*: initial;
+
+  --color-bg: var(--pt-bg);
+  --color-surface: var(--pt-surface);
+  --color-surface-2: var(--pt-surface-2);
+  --color-surface-3: var(--pt-surface-3);
+  --color-separator: var(--pt-separator);
+  --color-border: var(--pt-border);
+  --color-scrim: var(--pt-scrim);
+
+  --color-text: var(--pt-text);
+  --color-muted: var(--pt-text-muted);
+  --color-subtle: var(--pt-text-subtle);
+  --color-disabled: var(--pt-text-disabled);
+  --color-on-primary: var(--pt-text-on-primary);
+  --color-on-dark: var(--pt-text-on-dark);
+  --color-on-dark-muted: var(--pt-text-on-dark-muted);
+
+  --color-primary: var(--pt-primary);
+  --color-primary-hover: var(--pt-primary-hover);
+  --color-primary-pressed: var(--pt-primary-pressed);
+  --color-primary-soft: var(--pt-primary-soft);
+  --color-brand-navy: var(--pt-brand-navy);
+  --color-brand-navy-2: var(--pt-brand-navy-2);
+  --color-brand-green: var(--pt-brand-green);
+  --color-brand-leaf: var(--pt-brand-leaf);
+
+  --color-success: var(--pt-success);
+  --color-success-soft: var(--pt-success-soft);
+  --color-success-solid: var(--pt-success-solid);
+  --color-warning: var(--pt-warning);
+  --color-warning-soft: var(--pt-warning-soft);
+  --color-warning-solid: var(--pt-warning-solid);
+  --color-danger: var(--pt-danger);
+  --color-danger-hover: var(--pt-danger-hover);
+  --color-danger-soft: var(--pt-danger-soft);
+  --color-offline: var(--pt-offline);
+  --color-offline-soft: var(--pt-offline-soft);
+  --color-neutral: var(--pt-neutral);
+  --color-neutral-soft: var(--pt-neutral-soft);
+  --color-banner-offline: var(--pt-banner-offline);
+
+  --color-focus: var(--pt-focus);
+  --color-focus-on-dark: var(--pt-focus-on-dark);
+  --color-white: #ffffff;
+  --color-transparent: transparent;
+  --color-current: currentColor;
+
+  /* Tipografia */
+  --font-sans: var(--pt-font-sans);
+  --font-mono: var(--pt-font-mono);
+
+  --text-clock: var(--pt-text-clock);
+  --text-clock--line-height: var(--pt-text-clock--lh);
+  --text-clock--font-weight: var(--pt-text-clock--wt);
+  --text-display: var(--pt-text-display);
+  --text-display--line-height: var(--pt-text-display--lh);
+  --text-display--font-weight: var(--pt-text-display--wt);
+  --text-title-lg: var(--pt-text-title-lg);
+  --text-title-lg--line-height: var(--pt-text-title-lg--lh);
+  --text-title-lg--font-weight: var(--pt-text-title-lg--wt);
+  --text-title: var(--pt-text-title);
+  --text-title--line-height: var(--pt-text-title--lh);
+  --text-title--font-weight: var(--pt-text-title--wt);
+  --text-title-sm: var(--pt-text-title-sm);
+  --text-title-sm--line-height: var(--pt-text-title-sm--lh);
+  --text-title-sm--font-weight: var(--pt-text-title-sm--wt);
+  --text-body: var(--pt-text-body);
+  --text-body--line-height: var(--pt-text-body--lh);
+  --text-body--font-weight: var(--pt-text-body--wt);
+  --text-body-sm: var(--pt-text-body-sm);
+  --text-body-sm--line-height: var(--pt-text-body-sm--lh);
+  --text-body-sm--font-weight: var(--pt-text-body-sm--wt);
+  --text-caption: var(--pt-text-caption);
+  --text-caption--line-height: var(--pt-text-caption--lh);
+  --text-caption--font-weight: var(--pt-text-caption--wt);
+  --text-label: var(--pt-text-label);
+  --text-label--line-height: var(--pt-text-label--lh);
+  --text-label--font-weight: var(--pt-text-label--wt);
+  --text-button: var(--pt-text-button);
+  --text-button--line-height: var(--pt-text-button--lh);
+  --text-button--font-weight: var(--pt-text-button--wt);
+  --text-punch: var(--pt-text-punch);
+  --text-punch--line-height: var(--pt-text-punch--lh);
+  --text-punch--font-weight: var(--pt-text-punch--wt);
+  --tracking-tight: var(--pt-tracking-tight);
+  --tracking-caps: var(--pt-tracking-caps);
+
+  /* Raios */
+  --radius-sm: var(--pt-radius-sm);
+  --radius-md: var(--pt-radius-md);
+  --radius-lg: var(--pt-radius-lg);
+  --radius-xl: var(--pt-radius-xl);
+  --radius-card: var(--pt-radius-lg);
+  --radius-control: var(--pt-radius-md);
+  --radius-sheet: var(--pt-radius-xl);
+
+  /* Sombras */
+  --shadow-sm: var(--pt-shadow-sm);
+  --shadow-md: var(--pt-shadow-md);
+  --shadow-lg: var(--pt-shadow-lg);
+  --shadow-punch: var(--pt-shadow-punch);
+  --shadow-nav: var(--pt-shadow-nav);
+
+  /* Medidas de layout/componente (geram w-*, h-*, max-w-*, size-*, p-* …) */
+  --spacing-touch: var(--pt-touch-min);
+  --spacing-control: var(--pt-control-h);
+  --spacing-control-sm: var(--pt-control-h-sm);
+  --spacing-topbar: var(--pt-topbar-h);
+  --spacing-tabbar: var(--pt-tabbar-h);
+  --spacing-sidebar: var(--pt-sidebar-w);
+  --spacing-punch: var(--pt-punch-size);
+  --container-content: var(--pt-content-max);
+  --container-form: var(--pt-form-max);
+
+  /* Camadas — use z-(--z-modal) ou classes utilitárias próprias */
+  --z-sticky: var(--pt-z-sticky);
+  --z-nav: var(--pt-z-nav);
+  --z-banner: var(--pt-z-banner);
+  --z-overlay: var(--pt-z-overlay);
+  --z-modal: var(--pt-z-modal);
+  --z-toast: var(--pt-z-toast);
+
+  /* Movimento */
+  --ease-out: var(--pt-ease-out);
+  --ease-in-out: var(--pt-ease-in-out);
+  --animate-punch-pulse: punch-pulse var(--pt-duration-pulse) var(--pt-ease-in-out) infinite;
+  --animate-fade-in: fade-in var(--pt-duration-base) var(--pt-ease-out);
+  --animate-sheet-in: sheet-in var(--pt-duration-slow) var(--pt-ease-out);
+
+  @keyframes punch-pulse {
+    0%, 100% { box-shadow: var(--pt-shadow-punch), 0 0 0 0 rgb(126 217 87 / 0.55); }
+    50% { box-shadow: var(--pt-shadow-punch), 0 0 0 14px rgb(126 217 87 / 0); }
+  }
+  @keyframes fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  @keyframes sheet-in {
+    from { transform: translateY(24px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+}
+
+/* Base sugerida (T010) — foco visível e movimento reduzido. */
+@layer base {
+  html { font-family: var(--pt-font-sans); background: var(--pt-bg); color: var(--pt-text); -webkit-text-size-adjust: 100%; }
+  /* [tabindex="-1"] fica de fora: é o h1 que recebe foco programático na troca de rota
+     (components.md §1.1) e não é um controle — sem anel (corrigido na revisão T070). */
+  :where(a, button, input, select, textarea, summary, [tabindex]:not([tabindex="-1"])):focus-visible {
+    outline: var(--pt-focus-width) solid var(--pt-focus);
+    outline-offset: var(--pt-focus-offset);
+  }
+  .on-dark :where(a, button, input, select, textarea, summary, [tabindex]:not([tabindex="-1"])):focus-visible { outline-color: var(--pt-focus-on-dark); }
+  [tabindex="-1"]:focus { outline: none; }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
+  }
+}

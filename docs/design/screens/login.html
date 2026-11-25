@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Login e cadastro · Mockups Pontua</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400..800&display=swap">
+<link rel="stylesheet" href="../tokens.css">
+<link rel="stylesheet" href="mockup.css">
+</head>
+<body>
+<div class="doc">
+  <header><img src="../assets/logo.png" alt="Pontua"><div><h1>Login e cadastro (<code>/entrar</code>, <code>/cadastro</code>)</h1><p class="lead">US1 · FR-007, FR-008. Telas públicas: no celular, uma coluna com a logo; no computador, painel navy da marca à esquerda (a logo fica num "selo" branco, pois só funciona sobre fundo claro).</p></div></header>
+  <nav class="docnav" aria-label="Telas"><a href="index.html">Índice</a><a href="login.html" aria-current="page">Login</a><a href="welcome.html">Bem-vindo</a><a href="clock.html">Ponto</a><a href="history.html">Histórico</a><a href="approvals.html">Aprovações</a><a href="position-editor.html">Cargo e jornada</a><a href="invite.html">Convite</a><a href="members.html">Membros</a><a href="settings.html">Configurações</a><a href="states.html">Estados e PWA</a></nav>
+
+  <section class="variant" data-tpl="t-login" data-sizes="360x780,1280x800">
+    <h2>1. Entrar</h2>
+    <p>Google primeiro (menos digitação no celular), depois e-mail e senha. Botão "Mostrar senha" de 44 px dentro do campo. <code>autocomplete="email"</code> / <code>"current-password"</code>.</p>
+  </section>
+  <section class="variant" data-tpl="t-login-err" data-sizes="360x780">
+    <h2>2. Sessão expirada + erros por campo</h2>
+    <p>FR-008: aviso no topo e, depois de entrar, volta para <code>returnTo</code>. Erros ligados ao campo (<code>aria-describedby</code>, <code>aria-invalid</code>), borda 2 px e ícone — não só cor. Foco vai para o primeiro campo com erro.</p>
+  </section>
+  <section class="variant" data-tpl="t-register" data-sizes="360x860,1280x800">
+    <h2>3. Criar conta</h2>
+    <p>US1-1: ao criar a conta o usuário já entra. Requisito de senha visível antes do erro.</p>
+  </section>
+</div>
+
+<template id="t-login" data-shell="public">
+  <aside class="pub-brand on-dark" aria-hidden="true">
+    <div class="chip-logo"><img src="../assets/logo.png" alt=""></div>
+    <div><h2>Seu ponto, do celular, em dois toques.</h2><p>Registre entradas e saídas, acompanhe suas horas e resolva marcações esquecidas sem papel.</p></div>
+    <ul><li><i data-i="circle-check"></i>Funciona mesmo sem internet</li><li><i data-i="circle-check"></i>Marcação manual com aprovação</li><li><i data-i="circle-check"></i>Instale na tela inicial</li></ul>
+  </aside>
+  <main class="pub-main" id="conteudo"><div class="pub-card">
+    <img class="logo hide-d" src="../assets/logo.png" alt="Pontua">
+    <h1>Entrar</h1>
+    <p class="lead">Use sua conta para registrar o ponto.</p>
+    <button class="btn btn-google btn-block"><svg class="gicon" viewBox="0 0 24 24" aria-hidden="true"><path fill="#4285F4" d="M23.5 12.27c0-.85-.08-1.67-.22-2.45H12v4.63h6.46a5.52 5.52 0 0 1-2.4 3.62v3h3.88c2.27-2.09 3.56-5.17 3.56-8.8z"/><path fill="#34A853" d="M12 24c3.24 0 5.96-1.07 7.94-2.91l-3.88-3c-1.07.72-2.45 1.15-4.06 1.15-3.12 0-5.77-2.11-6.71-4.95H1.28v3.1A12 12 0 0 0 12 24z"/><path fill="#FBBC05" d="M5.29 14.29A7.2 7.2 0 0 1 4.91 12c0-.8.14-1.57.38-2.29v-3.1H1.28A12 12 0 0 0 0 12c0 1.94.46 3.77 1.28 5.39l4.01-3.1z"/><path fill="#EA4335" d="M12 4.77c1.76 0 3.34.61 4.59 1.8l3.44-3.44C17.95 1.19 15.24 0 12 0A12 12 0 0 0 1.28 6.61l4.01 3.1C6.23 6.88 8.88 4.77 12 4.77z"/></svg>Continuar com Google</button>
+    <div class="divider">ou</div>
+    <form class="stack" novalidate>
+      <div class="field"><label for="e1">E-mail</label><input class="input" id="e1" type="email" autocomplete="email" placeholder="voce@empresa.com.br"></div>
+      <div class="field"><label for="p1">Senha</label><div class="input-wrap"><input class="input" id="p1" type="password" autocomplete="current-password" value="segredo123"><button type="button" class="iconbtn" aria-label="Mostrar senha"><i data-i="eye"></i></button></div></div>
+      <button class="btn btn-primary btn-block"><i data-i="log-in"></i>Entrar</button>
+    </form>
+    <p class="sm" style="text-align:center">Não tem conta? <a href="#/cadastro"><strong>Criar conta</strong></a></p>
+    <p class="cap muted" style="text-align:center">Recebeu um convite? Abra o link do convite para entrar direto na empresa.</p>
+  </div></main>
+</template>
+
+<template id="t-login-err" data-shell="public">
+  <main class="pub-main" id="conteudo"><div class="pub-card">
+    <img class="logo" src="../assets/logo.png" alt="Pontua">
+    <div class="notice n-info" role="status"><i data-i="info"></i><span><strong>Sua sessão expirou.</strong> Entre de novo para continuar de onde parou.</span></div>
+    <h1>Entrar</h1>
+    <form class="stack" novalidate>
+      <div class="field invalid"><label for="e2">E-mail</label><input class="input" id="e2" type="email" value="mariana@padariasol" aria-invalid="true" aria-describedby="e2-err"><p class="err" id="e2-err"><i data-i="circle-alert" class="s16"></i>Informe um e-mail válido.</p></div>
+      <div class="field invalid"><label for="p2">Senha</label><div class="input-wrap"><input class="input" id="p2" type="password" value="" aria-invalid="true" aria-describedby="p2-err"><button type="button" class="iconbtn" aria-label="Mostrar senha"><i data-i="eye"></i></button></div><p class="err" id="p2-err"><i data-i="circle-alert" class="s16"></i>Informe sua senha.</p></div>
+      <button class="btn btn-primary btn-block">Entrar</button>
+    </form>
+    <div class="divider">ou</div>
+    <button class="btn btn-google btn-block"><svg class="gicon" viewBox="0 0 24 24" aria-hidden="true"><path fill="#4285F4" d="M23.5 12.27c0-.85-.08-1.67-.22-2.45H12v4.63h6.46a5.52 5.52 0 0 1-2.4 3.62v3h3.88c2.27-2.09 3.560-5.17 3.56-8.8z"/><path fill="#34A853" d="M12 24c3.24 0 5.96-1.07 7.94-2.91l-3.88-3c-1.07.72-2.45 1.15-4.06 1.15-3.12 0-5.77-2.11-6.71-4.95H1.28v3.1A12 12 0 0 0 12 24z"/><path fill="#FBBC05" d="M5.29 14.290A7.2 7.2 0 0 1 4.91 12c0-.8.14-1.57.38-2.29v-3.1H1.28A12 12 0 0 0 0 12c0 1.94.46 3.77 1.28 5.39l4.01-3.1z"/><path fill="#EA4335" d="M12 4.77c1.76 0 3.34.61 4.59 1.8l3.44-3.44C17.95 1.19 15.24 0 12 0A12 12 0 0 0 1.28 6.61l4.01 3.1C6.23 6.88 8.88 4.77 12 4.77z"/></svg>Continuar com Google</button>
+  </div></main>
+</template>
+
+<template id="t-register" data-shell="public">
+  <aside class="pub-brand on-dark" aria-hidden="true">
+    <div class="chip-logo"><img src="../assets/logo.png" alt=""></div>
+    <div><h2>Comece em menos de um minuto.</h2><p>Crie sua conta e depois crie sua empresa ou entre por um convite.</p></div>
+    <ul><li><i data-i="circle-check"></i>Funciona no celular e no computador</li><li><i data-i="circle-check"></i>Sem instalar nada</li></ul>
+  </aside>
+  <main class="pub-main" id="conteudo"><div class="pub-card">
+    <img class="logo hide-d" src="../assets/logo.png" alt="Pontua">
+    <h1>Criar conta</h1>
+    <button class="btn btn-google btn-block"><svg class="gicon" viewBox="0 0 24 24" aria-hidden="true"><path fill="#4285F4" d="M23.5 12.27c0-.85-.08-1.67-.22-2.45H12v4.63h6.46a5.52 5.52 0 0 1-2.4 3.62v3h3.88c2.27-2.09 3.56-5.17 3.56-8.8z"/><path fill="#34A853" d="M12 24c3.24 0 5.96-1.07 7.94-2.91l-3.88-3c-1.07.72-2.45 1.15-4.06 1.15-3.12 0-5.77-2.11-6.71-4.950H1.28v3.1A12 12 0 0 0 12 24z"/><path fill="#FBBC05" d="M5.29 14.29A7.2 7.2 0 0 1 4.91 12c0-.8.14-1.57.38-2.29v-3.1H1.28A12 12 0 0 0 0 12c0 1.94.46 3.77 1.28 5.39l4.01-3.1z"/><path fill="#EA4335" d="M12 4.77c1.76 0 3.34.61 4.59 1.8l3.44-3.44C17.95 1.19 15.24 0 12 0A12 12 0 0 0 1.28 6.61l4.01 3.1C6.23 6.88 8.88 4.77 12 4.77z"/></svg>Continuar com Google</button>
+    <div class="divider">ou</div>
+    <form class="stack" novalidate>
+      <div class="field"><label for="n3">Nome</label><input class="input" id="n3" autocomplete="name" value="Ana Souza"></div>
+      <div class="field"><label for="e3">E-mail</label><input class="input" id="e3" type="email" autocomplete="email" value="ana.souza@gmail.com"></div>
+      <div class="field invalid"><label for="p3">Senha</label><div class="input-wrap"><input class="input" id="p3" type="password" autocomplete="new-password" value="abc12" aria-invalid="true" aria-describedby="p3-h p3-err"><button type="button" class="iconbtn" aria-label="Mostrar senha"><i data-i="eye"></i></button></div><p class="help" id="p3-h">Mínimo de 8 caracteres.</p><p class="err" id="p3-err"><i data-i="circle-alert" class="s16"></i>A senha precisa ter pelo menos 8 caracteres.</p></div>
+      <button class="btn btn-primary btn-block">Criar conta</button>
+    </form>
+    <p class="sm" style="text-align:center">Já tem conta? <a href="#/entrar"><strong>Entrar</strong></a></p>
+  </div></main>
+</template>
+
+<script src="mockup.js"></script>
+</body>
+</html>

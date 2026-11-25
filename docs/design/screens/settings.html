@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Empresa e configurações · Mockups Pontua</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400..800&display=swap">
+<link rel="stylesheet" href="../tokens.css">
+<link rel="stylesheet" href="mockup.css">
+</head>
+<body>
+<div class="doc">
+  <header><img src="../assets/logo.png" alt="Pontua"><div><h1>Empresa, configurações e conta (<code>/empresa</code>, <code>/empresa/configuracoes</code>, <code>/conta</code>)</h1><p class="lead">US3, US7 · FR-007, FR-009, FR-011, FR-020. O membro comum vê só as informações da empresa; o responsável vê os atalhos de configuração. Transferência com confirmação explícita.</p></div></header>
+  <nav class="docnav" aria-label="Telas"><a href="index.html">Índice</a><a href="login.html">Login</a><a href="welcome.html">Bem-vindo</a><a href="clock.html">Ponto</a><a href="history.html">Histórico</a><a href="approvals.html">Aprovações</a><a href="position-editor.html">Cargo e jornada</a><a href="invite.html">Convite</a><a href="members.html">Membros</a><a href="settings.html" aria-current="page">Configurações</a><a href="states.html">Estados e PWA</a></nav>
+
+  <section class="variant" data-tpl="t-hub" data-sizes="360x780,1280x760">
+    <h2>1. Empresa (responsável)</h2>
+    <p>Hub da aba "Empresa": atalhos para Cargos, Membros, Convites e Configurações.</p>
+  </section>
+  <section class="variant" data-tpl="t-hub-member" data-sizes="360x700">
+    <h2>2. Empresa (membro comum)</h2>
+    <p>US3-5: sem opções de configuração; só informações.</p>
+  </section>
+  <section class="variant" data-tpl="t-settings" data-sizes="360x1080,1280x900">
+    <h2>3. Configurações da empresa</h2>
+    <p>Nome, documento, fuso, limite de dias para marcação manual. Zona de transferência separada no fim.</p>
+  </section>
+  <section class="variant" data-tpl="t-transfer" data-sizes="360x860,1280x860">
+    <h2>4. Transferir responsabilidade (ConfirmModal destrutivo com digitação)</h2>
+    <p>US7-3: lista as consequências e pede o nome do novo responsável para habilitar o botão. Foco inicial em "Cancelar".</p>
+  </section>
+  <section class="variant" data-tpl="t-account" data-sizes="360x940">
+    <h2>5. Minha conta (<code>/conta</code>)</h2>
+    <p>Nome, senha, instalar app (InstallAppButton cartão) e sair.</p>
+  </section>
+</div>
+
+<template id="t-hub" data-nav="empresa" data-role="owner" data-pending="3">
+  <div class="page-head"><div><h1>Padaria Sol</h1><p class="sub">Você é a responsável · 9 membros</p></div></div>
+  <div class="l2">
+    <ul class="card list">
+      <li><a class="lrow" href="#"><span class="avatar" style="border-radius:12px"><i data-i="briefcase"></i></span><span class="grow"><span class="b" style="display:block">Cargos e jornadas</span><span class="sm muted">3 cargos</span></span><i data-i="chevron-right" class="chev"></i></a></li>
+      <li><a class="lrow" href="#"><span class="avatar" style="border-radius:12px"><i data-i="users"></i></span><span class="grow"><span class="b" style="display:block">Membros</span><span class="sm muted">9 ativos · 2 inativos</span></span><i data-i="chevron-right" class="chev"></i></a></li>
+      <li><a class="lrow" href="#"><span class="avatar" style="border-radius:12px"><i data-i="user-plus"></i></span><span class="grow"><span class="b" style="display:block">Convites</span><span class="sm muted">1 ativo</span></span><i data-i="chevron-right" class="chev"></i></a></li>
+      <li><a class="lrow" href="#"><span class="avatar" style="border-radius:12px"><i data-i="settings-2"></i></span><span class="grow"><span class="b" style="display:block">Configurações</span><span class="sm muted">Dados, fuso, limites e transferência</span></span><i data-i="chevron-right" class="chev"></i></a></li>
+    </ul>
+    <section class="card pad stack"><h2 class="t">Sobre a empresa</h2><dl class="dl"><dt>CNPJ</dt><dd class="tnum">12.345.678/0001-90</dd><dt>Fuso</dt><dd>Horário de Brasília</dd><dt>Marcação manual</dt><dd>até 30 dias atrás</dd></dl></section>
+  </div>
+</template>
+
+<template id="t-hub-member" data-nav="empresa" data-role="member">
+  <div class="page-head"><div><h1>Padaria Sol</h1><p class="sub">Você é membro · Atendente</p></div></div>
+  <section class="card pad stack"><h2 class="t">Sua jornada</h2><p class="summary"><i data-i="calendar"></i>Seg–Sex · 4 marcações · 44 h/semana</p>
+    <ol class="tl list" style="margin:0 -16px"><li><span class="grow nm">Entrada</span><span class="tm">08:00</span></li><li><span class="grow nm">Pausa</span><span class="tm">12:00</span></li><li><span class="grow nm">Retorno</span><span class="tm">13:00</span></li><li><span class="grow nm">Saída</span><span class="tm">17:48</span></li></ol></section>
+  <section class="card pad stack"><h2 class="t">Sobre a empresa</h2><dl class="dl"><dt>Responsável</dt><dd>Mariana Costa</dd><dt>Fuso</dt><dd>Horário de Brasília</dd><dt>Marcação manual</dt><dd>até 30 dias atrás</dd></dl></section>
+</template>
+
+<template id="t-settings" data-nav="empresa" data-role="owner" data-pending="3" data-toast="success|Configurações salvas">
+  <div><a class="back" href="#/empresa"><i data-i="chevron-left"></i>Empresa</a><div class="page-head"><h1>Configurações</h1></div></div>
+  <div class="l2">
+    <form class="card pad stack" novalidate aria-labelledby="dados-t">
+      <h2 class="t" id="dados-t">Dados da empresa</h2>
+      <div class="field"><label for="sn">Nome</label><input class="input" id="sn" value="Padaria Sol"></div>
+      <div class="field"><label for="sd">CNPJ ou CPF <span class="opt">(opcional)</span></label><input class="input tnum" id="sd" value="12.345.678/0001-90"></div>
+      <div class="field"><label for="st">Fuso horário</label><select class="input" id="st"><option>Horário de Brasília (GMT−3)</option></select></div>
+      <div class="field"><label for="sl">Limite para marcação manual</label><div class="row"><input class="input tnum" id="sl" type="number" value="30" style="max-width:120px" aria-describedby="sl-h"><span class="muted">dias</span></div><p class="help" id="sl-h">Membros podem incluir ou corrigir marcações de até 30 dias atrás.</p></div>
+      <button class="btn btn-primary btn-block">Salvar</button>
+    </form>
+    <section class="card pad stack" aria-labelledby="tr-t" style="border-color:var(--pt-danger)">
+      <h2 class="t" id="tr-t">Transferir responsabilidade</h2>
+      <p class="sm muted">Passe a responsabilidade pela Padaria Sol para outro membro. Você continua na empresa como membro e perde o acesso às configurações.</p>
+      <div class="field"><label for="nr">Novo responsável</label><select class="input" id="nr"><option>Carla Mendes — Atendente</option></select></div>
+      <button class="btn btn-reject btn-block"><i data-i="arrow-left-right"></i>Transferir responsabilidade</button>
+    </section>
+  </div>
+</template>
+
+<template id="t-transfer" data-nav="empresa" data-role="owner" data-pending="3" data-overlay="o-transfer">
+  <div class="page-head"><h1>Configurações</h1></div>
+</template>
+<template id="o-transfer">
+  <div class="sheet-h"><h2 id="{T}">Transferir a responsabilidade para Carla Mendes?</h2><button class="iconbtn" aria-label="Fechar"><i data-i="x"></i></button></div>
+  <div class="notice n-warning"><i data-i="triangle-alert"></i><div><strong>O que acontece:</strong>
+    <ul style="list-style:disc;padding-left:18px;margin-top:4px"><li>Carla passa a ser a responsável pela Padaria Sol.</li><li>Você perde o acesso a cargos, membros, convites e configurações <strong>imediatamente</strong>.</li><li>Só a Carla poderá devolver a responsabilidade.</li></ul></div></div>
+  <div class="field"><label for="cf">Digite <strong>Carla Mendes</strong> para confirmar</label><input class="input" id="cf" value="Carla Men" autocomplete="off"></div>
+  <div class="sheet-f"><button class="btn btn-secondary btn-block demo-focus">Cancelar</button><button class="btn btn-danger btn-block" disabled aria-describedby="cf">Transferir</button></div>
+</template>
+
+<template id="t-account" data-nav="empresa" data-role="owner" data-pending="3">
+  <div class="page-head"><h1>Minha conta</h1></div>
+  <form class="card pad stack" novalidate><h2 class="t">Seus dados</h2>
+    <div class="field"><label for="an">Nome</label><input class="input" id="an" value="Mariana Costa" autocomplete="name"></div>
+    <div class="field"><label for="ae">E-mail</label><input class="input" id="ae" value="mariana@padariasol.com.br" readonly></div>
+    <button class="btn btn-secondary btn-block">Salvar nome</button></form>
+  <form class="card pad stack" novalidate><h2 class="t">Senha</h2>
+    <div class="field"><label for="ap">Senha atual</label><input class="input" id="ap" type="password" autocomplete="current-password"></div>
+    <div class="field"><label for="anp">Nova senha</label><input class="input" id="anp" type="password" autocomplete="new-password" aria-describedby="anp-h"><p class="help" id="anp-h">Mínimo de 8 caracteres.</p></div>
+    <button class="btn btn-secondary btn-block">Trocar senha</button></form>
+  <div class="card pad row" style="align-items:flex-start;gap:14px">
+    <img src="../assets/logo-symbol.png" alt="" style="width:40px;height:40px;object-fit:contain">
+    <div class="grow stack" style="gap:8px"><div><h2 class="t">Instale o Pontua</h2><p class="sm muted">Abra direto da tela inicial, em tela cheia.</p></div><button class="btn btn-primary btn-sm" style="align-self:flex-start"><i data-i="download"></i>Instalar app</button></div>
+  </div>
+  <button class="btn btn-danger-ghost btn-block"><i data-i="log-out"></i>Sair da conta</button>
+</template>
+
+<script src="mockup.js"></script>
+</body>
+</html>

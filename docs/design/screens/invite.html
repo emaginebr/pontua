@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Convite · Mockups Pontua</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400..800&display=swap">
+<link rel="stylesheet" href="../tokens.css">
+<link rel="stylesheet" href="mockup.css">
+</head>
+<body>
+<div class="doc">
+  <header><img src="../assets/logo.png" alt="Pontua"><div><h1>Convite (<code>/convite/:token</code>, <code>/empresa/convites</code>)</h1><p class="lead">US4 · FR-019, FR-021 · SC-002. Página pública mostra empresa e cargo antes do login; o aceite acontece sozinho depois de criar a conta ou entrar. O responsável gera, compartilha (menu nativo), copia e revoga convites.</p></div></header>
+  <nav class="docnav" aria-label="Telas"><a href="index.html">Índice</a><a href="login.html">Login</a><a href="welcome.html">Bem-vindo</a><a href="clock.html">Ponto</a><a href="history.html">Histórico</a><a href="approvals.html">Aprovações</a><a href="position-editor.html">Cargo e jornada</a><a href="invite.html" aria-current="page">Convite</a><a href="members.html">Membros</a><a href="settings.html">Configurações</a><a href="states.html">Estados e PWA</a></nav>
+
+  <section class="variant" data-tpl="t-public" data-sizes="360x860,1280x800">
+    <h2>1. Público — convidado sem conta</h2>
+    <p>"Você foi convidado para Padaria Sol como Atendente". Cadastro curto na própria página; "Já tenho conta" troca para o formulário de entrar. Google também aceita o convite.</p>
+  </section>
+  <section class="variant" data-tpl="t-expired" data-sizes="360x700">
+    <h2>2. Link expirado ou revogado</h2>
+    <p>Mensagem clara e orientação para pedir um novo convite. Sem formulário.</p>
+  </section>
+  <section class="variant" data-tpl="t-list" data-sizes="360x1000,1280x860">
+    <h2>3. Responsável — lista de convites do mês</h2>
+    <p>Situação (Ativo/Expirado/Revogado) com texto + cor, cargo, validade, aceites; compartilhar, copiar e revogar. Filtro por mês.</p>
+  </section>
+  <section class="variant" data-tpl="t-share" data-sizes="360x780,1280x820">
+    <h2>4. Convite criado — compartilhar</h2>
+    <p>"Compartilhar" abre o menu nativo (Web Share API; o botão some sem suporte). "Copiar link" vira "Copiado" por 2 s com anúncio <code>aria-live</code>.</p>
+  </section>
+</div>
+
+<template id="t-public" data-shell="public">
+  <aside class="pub-brand on-dark" aria-hidden="true">
+    <div class="chip-logo"><img src="../assets/logo.png" alt=""></div>
+    <div><h2>Sua equipe registra o ponto pelo celular.</h2><p>Depois de aceitar, você já pode registrar sua primeira marcação.</p></div>
+    <ul><li><i data-i="circle-check"></i>Funciona mesmo sem internet</li><li><i data-i="circle-check"></i>Seu histórico sempre à mão</li></ul>
+  </aside>
+  <main class="pub-main" id="conteudo"><div class="pub-card">
+    <img class="logo hide-d" src="../assets/logo.png" alt="Pontua" style="height:40px">
+    <div class="card pad" style="text-align:center;background:var(--pt-primary-soft);border-color:transparent">
+      <span class="avatar lg" style="margin:0 auto 8px;background:var(--pt-surface)"><i data-i="building-2" class="s24"></i></span>
+      <h1 style="font-size:1.25rem;line-height:1.75rem">Você foi convidado para <span style="white-space:nowrap">Padaria Sol</span> como <strong>Atendente</strong></h1>
+      <p class="cap muted" style="margin-top:4px">Convite de Mariana Costa · vale até 02/12/2026</p>
+    </div>
+    <h2 class="t">Crie sua conta para aceitar</h2>
+    <button class="btn btn-google btn-block"><svg class="gicon" viewBox="0 0 24 24" aria-hidden="true"><path fill="#4285F4" d="M23.5 12.27c0-.85-.08-1.67-.22-2.45H12v4.63h6.46a5.52 5.52 0 0 1-2.4 3.62v3h3.88c2.27-2.09 3.56-5.17 3.56-8.8z"/><path fill="#34A853" d="M12 24c3.24 0 5.96-1.07 7.94-2.91l-3.88-3c-1.07.72-2.45 1.15-4.06 1.15-3.12 0-5.77-2.11-6.71-4.95H1.28v3.1A12 12 0 0 0 12 24z"/><path fill="#FBBC05" d="M5.29 14.29A7.2 7.2 0 0 1 4.91 12c0-.8.14-1.57.38-2.29v-3.1H1.28A12 12 0 0 0 0 12c0 1.94.46 3.77 1.28 5.39l4.01-3.1z"/><path fill="#EA4335" d="M12 4.77c1.76 0 3.34.61 4.59 1.8l3.44-3.44C17.95 1.19 15.24 0 12 0A12 12 0 0 0 1.28 6.61l4.01 3.1C6.23 6.88 8.88 4.77 12 4.77z"/></svg>Continuar com Google</button>
+    <div class="divider">ou</div>
+    <form class="stack" novalidate>
+      <div class="field"><label for="n">Nome</label><input class="input" id="n" autocomplete="name" value="Ana Souza"></div>
+      <div class="field"><label for="e">E-mail</label><input class="input" id="e" type="email" autocomplete="email" value="ana.souza@gmail.com"></div>
+      <div class="field"><label for="p">Senha</label><div class="input-wrap"><input class="input" id="p" type="password" autocomplete="new-password" aria-describedby="p-h"><button type="button" class="iconbtn" aria-label="Mostrar senha"><i data-i="eye"></i></button></div><p class="help" id="p-h">Mínimo de 8 caracteres.</p></div>
+      <button class="btn btn-primary btn-block">Criar conta e aceitar</button>
+    </form>
+    <p class="sm" style="text-align:center">Já tem conta? <a href="#"><strong>Entrar e aceitar</strong></a></p>
+  </div></main>
+</template>
+
+<template id="t-expired" data-shell="public">
+  <main class="pub-main" id="conteudo"><div class="pub-card">
+    <img class="logo" src="../assets/logo.png" alt="Pontua" style="height:40px">
+    <div class="empty err" style="padding-top:16px"><span class="circ"><i data-i="calendar-x" class="s40"></i></span>
+      <h1 style="font-size:1.25rem;line-height:1.75rem">Este convite expirou</h1>
+      <p>O convite para <strong>Padaria Sol</strong> venceu em 18/11/2026. Peça um novo link a quem convidou você.</p></div>
+    <a class="btn btn-secondary btn-block" href="#/entrar">Ir para o Pontua</a>
+  </div></main>
+</template>
+
+<template id="t-list" data-nav="empresa" data-role="owner" data-pending="3">
+  <div><a class="back" href="#/empresa"><i data-i="chevron-left"></i>Empresa</a><div class="page-head"><h1>Convites</h1><button class="btn btn-primary btn-sm"><i data-i="user-plus"></i>Gerar convite</button></div></div>
+  <div class="pfilter"><button class="iconbtn" aria-label="Mês anterior"><i data-i="chevron-left"></i></button><span class="lbl">Novembro de 2026</span><button class="iconbtn" aria-label="Próximo mês"><i data-i="chevron-right"></i></button><button class="adv"><i data-i="sliders-horizontal" class="s16"></i><span>Filtro avançado</span></button></div>
+  <ul class="stack">
+    <li class="card">
+      <div class="mhead" style="align-items:flex-start"><div class="grow"><div class="row wrap" style="gap:8px"><span class="b">Atendente</span><span class="badge bg-approved"><i data-i="circle-check"></i>Ativo</span></div><p class="sm muted" style="margin-top:2px">Vale até 02/12 · 2 aceitaram · criado em 25/11</p></div></div>
+      <div class="day-f"><button class="btn btn-tertiary btn-sm"><i data-i="share-2" class="s16"></i>Compartilhar</button><button class="btn btn-tertiary btn-sm"><i data-i="copy" class="s16"></i>Copiar link</button><button class="btn btn-danger-ghost btn-sm" style="margin-left:auto">Revogar</button></div>
+    </li>
+    <li class="card">
+      <div class="mhead"><div class="grow"><div class="row wrap" style="gap:8px"><span class="b">Padeiro</span><span class="badge bg-neutral"><i data-i="clock"></i>Expirado</span></div><p class="sm muted" style="margin-top:2px">Venceu em 18/11 · 1 aceitou</p></div></div>
+    </li>
+    <li class="card">
+      <div class="mhead"><div class="grow"><div class="row wrap" style="gap:8px"><span class="b">Atendente</span><span class="badge bg-rejected"><i data-i="ban"></i>Revogado</span></div><p class="sm muted" style="margin-top:2px">Revogado em 10/11 · 0 aceitaram</p></div></div>
+    </li>
+  </ul>
+</template>
+
+<template id="t-share" data-nav="empresa" data-role="owner" data-pending="3" data-overlay="o-share">
+  <div class="page-head"><h1>Convites</h1></div>
+</template>
+<template id="o-share">
+  <div class="sheet-h"><h2 id="{T}">Convite criado</h2><button class="iconbtn" aria-label="Fechar"><i data-i="x"></i></button></div>
+  <p class="sm">Quem abrir este link entra na <strong>Padaria Sol</strong> como <strong>Atendente</strong>. Vale até 02/12/2026.</p>
+  <div class="field"><label for="lk">Link do convite</label><input class="input linkbox" id="lk" readonly value="https://pontua.app/convite/k7Qm2xR9vLp4"></div>
+  <div class="sheet-f"><button class="btn btn-secondary btn-block"><i data-i="check"></i>Copiado</button><button class="btn btn-primary btn-block"><i data-i="share-2"></i>Compartilhar</button></div>
+  <p class="cap muted" role="status">Link copiado para a área de transferência.</p>
+</template>
+
+<script src="mockup.js"></script>
+</body>
+</html>

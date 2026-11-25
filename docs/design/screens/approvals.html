@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Aprovações · Mockups Pontua</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400..800&display=swap">
+<link rel="stylesheet" href="../tokens.css">
+<link rel="stylesheet" href="mockup.css">
+</head>
+<body>
+<div class="doc">
+  <header><img src="../assets/logo.png" alt="Pontua"><div><h1>Painel de aprovações (<code>/aprovacoes</code>)</h1><p class="lead">US6 · FR-022, FR-023, FR-024. Agrupado por dia (mais recente primeiro), cada membro com nome, cargo, situação e todas as marcações do dia; aprovar/rejeitar por marcação, com atualização imediata.</p></div></header>
+  <nav class="docnav" aria-label="Telas"><a href="index.html">Índice</a><a href="login.html">Login</a><a href="welcome.html">Bem-vindo</a><a href="clock.html">Ponto</a><a href="history.html">Histórico</a><a href="approvals.html" aria-current="page">Aprovações</a><a href="position-editor.html">Cargo e jornada</a><a href="invite.html">Convite</a><a href="members.html">Membros</a><a href="settings.html">Configurações</a><a href="states.html">Estados e PWA</a></nav>
+
+  <section class="variant" data-tpl="t-panel" data-sizes="360x1240,1280x1000">
+    <h2>1. Painel do mês — pendências e "sem marcação"</h2>
+    <p>Botões "Aprovar" (verde cheio + ícone) e "Rejeitar" (contorno vermelho + ícone) com 44 px e rótulo acessível completo ("Aprovar Saída 18:00 de Ana Souza"). Marcação já aprovada mostra quem e quando. Cabeçalho do dia gruda no topo ao rolar.</p>
+  </section>
+  <section class="variant" data-tpl="t-reject" data-sizes="360x780,1280x820">
+    <h2>2. Rejeitar com motivo (ConfirmModal destrutivo)</h2>
+    <p>Motivo opcional. Foco inicial em "Cancelar" por ser ação destrutiva.</p>
+  </section>
+  <section class="variant" data-tpl="t-empty" data-sizes="360x700">
+    <h2>3. Sem pendências (EmptyState) e aviso de conflito</h2>
+    <p>Toast de aviso quando outra pessoa já analisou a marcação (409).</p>
+  </section>
+</div>
+
+<template id="t-panel" data-nav="aprovacoes" data-role="owner" data-pending="3">
+  <div class="page-head"><div><h1>Aprovações</h1><p class="sub">3 pendências · 1 dia útil sem marcação</p></div></div>
+  <div class="pfilter"><button class="iconbtn" aria-label="Mês anterior"><i data-i="chevron-left"></i></button><span class="lbl">Novembro de 2026</span><button class="iconbtn" aria-label="Próximo mês"><i data-i="chevron-right"></i></button><button class="adv"><i data-i="sliders-horizontal" class="s16"></i><span>Filtros</span></button></div>
+  <div class="row wrap" style="gap:8px">
+    <div class="seg grow" role="radiogroup" aria-label="Situação" style="min-width:280px"><label class="on"><input type="radio" name="s" checked>Todas</label><label><input type="radio" name="s">Pendências</label><label><input type="radio" name="s">Sem marcação</label></div>
+    <button class="chip"><i data-i="briefcase" class="s16"></i>Todos os cargos<i data-i="chevron-down" class="s16"></i></button>
+  </div>
+
+  <section class="stack" aria-labelledby="d24">
+    <div class="dgroup-h"><h2 id="d24">Segunda, 24 de novembro</h2><span class="cap muted">2 pessoas</span></div>
+    <article class="card">
+      <div class="mhead"><span class="avatar" aria-hidden="true">AS</span><div class="grow"><p class="nm">Ana Souza</p><p class="cap muted">Atendente</p></div><span class="badge bg-pending"><i data-i="hourglass"></i>1 pendência</span></div>
+      <ol class="tl list" style="border-top:1px solid var(--pt-separator)">
+        <li><span class="dot done"></span><span class="grow"><span class="nm">Entrada</span></span><span class="tm">07:58</span></li>
+        <li><span class="dot done"></span><span class="grow"><span class="nm">Pausa</span></span><span class="tm">12:00</span></li>
+        <li><span class="dot done"></span><span class="grow"><span class="nm">Retorno</span></span><span class="tm">13:00</span></li>
+        <li><span class="dot done"></span><span class="grow"><span class="nm">Saída</span><span class="badges" style="margin-top:4px"><span class="badge bg-neutral">Original</span></span></span><span class="tm">17:04</span></li>
+      </ol>
+      <div class="ap-item" style="background:var(--pt-warning-soft)">
+        <div><div class="row wrap" style="gap:6px"><strong>Saída</strong><span class="tnum b">18:00</span><span class="badges"><span class="badge bg-manual"><i data-i="pen-line"></i>Manual</span><span class="badge bg-pending" style="background:var(--pt-surface)"><i data-i="hourglass"></i>Pendente</span></span></div>
+          <p class="cap muted" style="margin-top:2px">Correção de 17:04 · pedida em 24/11 às 21:12</p></div>
+        <p class="just" style="background:var(--pt-surface)">"Fiquei até as 18h fechando o caixa e esqueci de marcar a saída certa."</p>
+        <div class="ap-acts"><button class="btn btn-reject btn-sm" aria-label="Rejeitar Saída 18:00 de Ana Souza"><i data-i="x"></i>Rejeitar</button><button class="btn btn-success btn-sm" aria-label="Aprovar Saída 18:00 de Ana Souza"><i data-i="check"></i>Aprovar</button></div>
+      </div>
+    </article>
+    <article class="card day missing">
+      <div class="mhead"><span class="avatar" aria-hidden="true">JL</span><div class="grow"><p class="nm">João Lima</p><p class="cap muted">Padeiro</p></div><span class="badge bg-rejected"><i data-i="calendar-x"></i>Sem marcação</span></div>
+      <p class="sm muted" style="padding:0 16px 14px">Nenhuma marcação neste dia útil · previsto 05:00–13:00 (4 marcações).</p>
+    </article>
+  </section>
+
+  <section class="stack" aria-labelledby="d21">
+    <div class="dgroup-h"><h2 id="d21">Sexta, 21 de novembro</h2><span class="cap muted">1 pessoa</span></div>
+    <article class="card">
+      <div class="mhead"><span class="avatar" aria-hidden="true">CM</span><div class="grow"><p class="nm">Carla Mendes</p><p class="cap muted">Atendente · Gestora</p></div><span class="badge bg-pending"><i data-i="hourglass"></i>2 pendências</span></div>
+      <div class="ap-item" style="background:var(--pt-warning-soft)">
+        <div><div class="row wrap" style="gap:6px"><strong>Entrada</strong><span class="tnum b">07:55</span><span class="badges"><span class="badge bg-offline" style="background:var(--pt-surface)"><i data-i="cloud-off"></i>Offline</span><span class="badge bg-pending" style="background:var(--pt-surface)"><i data-i="hourglass"></i>Pendente</span></span></div>
+          <p class="cap muted" style="margin-top:2px">Feita sem conexão · sincronizada às 08:40</p></div>
+        <div class="ap-acts"><button class="btn btn-reject btn-sm" aria-label="Rejeitar Entrada 07:55 de Carla Mendes"><i data-i="x"></i>Rejeitar</button><button class="btn btn-success btn-sm" aria-label="Aprovar Entrada 07:55 de Carla Mendes"><i data-i="check"></i>Aprovar</button></div>
+      </div>
+      <div class="ap-item">
+        <div><div class="row wrap" style="gap:6px"><strong>Pausa</strong><span class="tnum b">12:02</span><span class="badges"><span class="badge bg-offline"><i data-i="cloud-off"></i>Offline</span><span class="badge bg-approved"><i data-i="circle-check"></i>Aprovada</span></span></div>
+          <p class="cap muted" style="margin-top:2px">Aprovada por você agora</p></div>
+      </div>
+      <div class="ap-item" style="background:var(--pt-warning-soft)">
+        <div><div class="row wrap" style="gap:6px"><strong>Extra</strong><span class="tnum b">19:30</span><span class="badges"><span class="badge bg-manual" style="background:var(--pt-surface)"><i data-i="pen-line"></i>Manual</span><span class="badge bg-pending" style="background:var(--pt-surface)"><i data-i="hourglass"></i>Pendente</span></span></div></div>
+        <p class="just" style="background:var(--pt-surface)">"Inventário de fim de mês."</p>
+        <div class="ap-acts"><button class="btn btn-reject btn-sm" aria-label="Rejeitar marcação extra 19:30 de Carla Mendes"><i data-i="x"></i>Rejeitar</button><button class="btn btn-success btn-sm" aria-label="Aprovar marcação extra 19:30 de Carla Mendes"><i data-i="check"></i>Aprovar</button></div>
+      </div>
+    </article>
+  </section>
+</template>
+
+<template id="t-reject" data-nav="aprovacoes" data-role="owner" data-pending="3" data-overlay="o-reject">
+  <div class="page-head"><h1>Aprovações</h1></div>
+  <div class="dgroup-h"><h2>Segunda, 24 de novembro</h2></div>
+  <article class="card"><div class="mhead"><span class="avatar">AS</span><div class="grow"><p class="nm">Ana Souza</p><p class="cap muted">Atendente</p></div></div></article>
+</template>
+<template id="o-reject">
+  <div class="sheet-h"><h2 id="{T}">Rejeitar marcação?</h2><button class="iconbtn" aria-label="Fechar"><i data-i="x"></i></button></div>
+  <p class="sm">Ana Souza · <strong>Saída 18:00</strong> (correção de 17:04) · seg, 24 nov. A marcação original continua valendo.</p>
+  <div class="field"><label for="rm">Motivo <span class="opt">(opcional)</span></label><textarea class="input" id="rm" placeholder="Ex.: o caixa fechou às 17:00 neste dia."></textarea><p class="help">Ana verá o motivo no histórico dela.</p></div>
+  <div class="sheet-f"><button class="btn btn-secondary btn-block demo-focus">Cancelar</button><button class="btn btn-danger btn-block"><i data-i="x"></i>Rejeitar marcação</button></div>
+</template>
+
+<template id="t-empty" data-nav="aprovacoes" data-role="manager" data-pending="0" data-toast="warning|Esta marcação já foi analisada|Carlos aprovou às 09:12. A lista foi atualizada.">
+  <div class="page-head"><div><h1>Aprovações</h1><p class="sub">Membros dos cargos Atendente e Caixa</p></div></div>
+  <div class="pfilter"><button class="iconbtn" aria-label="Mês anterior"><i data-i="chevron-left"></i></button><span class="lbl">Novembro de 2026</span><button class="iconbtn" aria-label="Próximo mês"><i data-i="chevron-right"></i></button><button class="adv"><i data-i="sliders-horizontal" class="s16"></i><span>Filtros</span></button></div>
+  <div class="card"><div class="empty"><span class="circ"><i data-i="clipboard-check" class="s40"></i></span><h3>Nenhuma pendência neste mês</h3><p>Quando alguém pedir uma marcação manual ou faltar uma marcação em dia útil, aparece aqui.</p><button class="btn btn-secondary btn-sm"><i data-i="chevron-left" class="s16"></i>Ver outubro</button></div></div>
+</template>
+
+<script src="mockup.js"></script>
+</body>
+</html>

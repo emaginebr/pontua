@@ -1,0 +1,195 @@
+/* =============================================================================
+   Pontua — design tokens                         tarefa T002 · direção "Expediente"
+   -----------------------------------------------------------------------------
+   CÓPIA de docs/design/tokens.css (T010) — não editar aqui; alterar no design e
+   copiar de novo.
+   Fonte da verdade da direção visual: docs/design/DESIGN_DIRECTION.md
+   Especificação de componentes:        docs/design/components.md
+   Mockups (consomem este arquivo):     docs/design/screens/*.html
+
+   Tema: somente CLARO nesta versão (color-scheme: light). Ver DESIGN_DIRECTION §7.
+   ============================================================================= */
+
+:root {
+  color-scheme: light;
+
+  /* ---------------------------------------------------------------------------
+     1. PRIMITIVAS — cores extraídas da logomarca (docs/logomarca/logo.png).
+        NÃO usar direto em componentes; use as semânticas da seção 2.
+     ------------------------------------------------------------------------- */
+  --pt-logo-navy: #022b4d;        /* "Pont", ponteiros do relógio */
+  --pt-logo-blue: #015395;        /* corpo do calendário (topo do degradê) */
+  --pt-logo-green: #158212;       /* "ua" */
+  --pt-logo-green-dark: #08771b;  /* sombra da folha */
+  --pt-logo-leaf: #4aac08;        /* folha / swoosh (decorativo, 2,9:1 no branco) */
+
+  /* ---------------------------------------------------------------------------
+     2. SEMÂNTICAS
+     ------------------------------------------------------------------------- */
+
+  /* Superfícies (do fundo para o mais elevado) */
+  --pt-bg: #f3f6f9;               /* fundo do app; background_color do manifest */
+  --pt-surface: #ffffff;          /* cartões, barra superior, barra inferior, sidebar */
+  --pt-surface-2: #eaf0f5;        /* campos somente leitura, segmented, linha selecionada */
+  --pt-surface-3: #dce5ee;        /* hover/pressed de linhas, skeleton realce */
+  --pt-separator: #dde4eb;        /* linha entre itens — decorativa (nunca única borda de controle) */
+  --pt-border: #6e8296;           /* borda de campo/controle (≥ 3:1 em todas as superfícies) */
+  --pt-scrim: rgb(2 22 40 / 0.56);/* fundo atrás de modal/folha */
+
+  /* Texto */
+  --pt-text: #0a2540;             /* principal */
+  --pt-text-muted: #44586c;       /* secundário (legendas, rótulos de apoio) */
+  --pt-text-subtle: #56687a;      /* terciário (placeholders, metadados) — evitar sobre surface-3 */
+  --pt-text-disabled: #8796a5;    /* SOMENTE controle desabilitado (isento WCAG 1.4.3) */
+  --pt-text-on-primary: #ffffff;
+  --pt-text-on-dark: #ffffff;
+  --pt-text-on-dark-muted: #c9d3de;
+
+  /* Marca / ação primária (azul do calendário, escurecido para AA com branco) */
+  --pt-primary: #0a5394;
+  --pt-primary-hover: #08457c;
+  --pt-primary-pressed: #06345e;
+  --pt-primary-soft: #e3eef8;     /* fundo de item ativo, selo "Manual", chip selecionado */
+  --pt-brand-navy: #022b4d;       /* painel do relógio, títulos de marca */
+  --pt-brand-navy-2: #0a4a80;     /* fim do degradê do painel do relógio */
+  --pt-brand-green: #158212;      /* destaque de marca; texto só sobre bg/surface */
+  --pt-brand-leaf: #7ed957;       /* anel de progresso / detalhes SOBRE o painel navy */
+
+  /* Estados */
+  --pt-success: #11701a;          /* texto/ícone: Aprovada, saldo positivo, "Registrada" */
+  --pt-success-soft: #e5f3e3;
+  --pt-success-solid: #1a7f1f;    /* botão "Aprovar" cheio (texto branco 5,12:1) */
+  --pt-warning: #8a4b00;          /* texto/ícone: Pendente, fora do dia útil */
+  --pt-warning-soft: #fff1d6;
+  --pt-warning-solid: #f0a202;    /* contador de pendências (texto navy 6,78:1) */
+  --pt-danger: #b42318;           /* texto/ícone: Rejeitada, erro, saldo negativo; botão destrutivo */
+  --pt-danger-hover: #912018;
+  --pt-danger-soft: #fdecea;
+  --pt-offline: #4b4f9e;          /* tipo "Offline", fila "aguardando envio" */
+  --pt-offline-soft: #ececf9;
+  --pt-neutral: #4a5a6a;          /* Cancelada, Substituída, Extra, Inativo */
+  --pt-neutral-soft: #edf1f5;
+  --pt-banner-offline: #33384d;   /* banner "Sem conexão" (texto branco 11,58:1) */
+
+  /* Foco — laranja "ponteiro", distinto de toda cor de estado */
+  --pt-focus: #c2410c;            /* ≥ 4,07:1 sobre qualquer superfície clara */
+  --pt-focus-on-dark: #fdba74;    /* sobre navy/painel do relógio (8,56:1) */
+  --pt-focus-width: 3px;
+  --pt-focus-offset: 2px;
+
+  /* ---------------------------------------------------------------------------
+     3. TIPOGRAFIA — Plus Jakarta Sans (OFL, variável 200–800)
+     ------------------------------------------------------------------------- */
+  --pt-font-sans: "Plus Jakarta Sans Variable", "Plus Jakarta Sans", ui-sans-serif, system-ui,
+    -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --pt-font-mono: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+
+  /* Escala (rem → respeita zoom/tamanho de fonte do sistema). Pares tamanho/altura/peso. */
+  --pt-text-clock: 3.5rem;        --pt-text-clock--lh: 1;         --pt-text-clock--wt: 750;  /* 56 px, hora no painel */
+  --pt-text-clock-lg: 4.5rem;     /* 72 px, ≥ 1024 px */
+  --pt-text-display: 2rem;        --pt-text-display--lh: 2.5rem;  --pt-text-display--wt: 750; /* totais do mês */
+  --pt-text-title-lg: 1.5rem;     --pt-text-title-lg--lh: 2rem;   --pt-text-title-lg--wt: 700; /* h1 */
+  --pt-text-title: 1.25rem;       --pt-text-title--lh: 1.75rem;   --pt-text-title--wt: 700;    /* h2 */
+  --pt-text-title-sm: 1.0625rem;  --pt-text-title-sm--lh: 1.5rem; --pt-text-title-sm--wt: 650; /* h3, cartão */
+  --pt-text-body: 1rem;           --pt-text-body--lh: 1.5rem;     --pt-text-body--wt: 450;
+  --pt-text-body-sm: 0.875rem;    --pt-text-body-sm--lh: 1.25rem; --pt-text-body-sm--wt: 500;
+  --pt-text-caption: 0.8125rem;   --pt-text-caption--lh: 1.125rem;--pt-text-caption--wt: 550; /* mínimo do app: 13 px */
+  --pt-text-label: 0.875rem;      --pt-text-label--lh: 1.25rem;   --pt-text-label--wt: 650;
+  --pt-text-button: 1rem;         --pt-text-button--lh: 1.5rem;   --pt-text-button--wt: 650;
+  --pt-text-punch: 1.25rem;       --pt-text-punch--lh: 1.5rem;    --pt-text-punch--wt: 750;
+  --pt-tracking-tight: -0.02em;   /* títulos e relógio */
+  --pt-tracking-caps: 0.06em;     /* rótulos em caixa alta (dias da semana) */
+
+  /* ---------------------------------------------------------------------------
+     4. ESPAÇAMENTO — base 4 px
+     ------------------------------------------------------------------------- */
+  --pt-space-0: 0;
+  --pt-space-1: 0.25rem;  /* 4 */
+  --pt-space-2: 0.5rem;   /* 8 */
+  --pt-space-3: 0.75rem;  /* 12 */
+  --pt-space-4: 1rem;     /* 16 — padding lateral mobile */
+  --pt-space-5: 1.25rem;  /* 20 */
+  --pt-space-6: 1.5rem;   /* 24 — padding lateral ≥ 1024 */
+  --pt-space-8: 2rem;     /* 32 */
+  --pt-space-10: 2.5rem;  /* 40 */
+  --pt-space-12: 3rem;    /* 48 */
+  --pt-space-16: 4rem;    /* 64 */
+
+  /* ---------------------------------------------------------------------------
+     5. RAIOS, BORDAS, SOMBRAS
+     ------------------------------------------------------------------------- */
+  --pt-radius-sm: 0.5rem;   /* 8 — selos, chips */
+  --pt-radius-md: 0.75rem;  /* 12 — campos, botões */
+  --pt-radius-lg: 1rem;     /* 16 — cartões */
+  --pt-radius-xl: 1.5rem;   /* 24 — painel do relógio, folhas/modais */
+  --pt-radius-full: 9999px; /* botão de ponto, avatares, contador */
+  --pt-border-width: 1px;
+  --pt-border-width-strong: 2px; /* campo com erro, dia selecionado */
+
+  --pt-shadow-sm: 0 1px 2px rgb(10 37 64 / 0.06), 0 1px 1px rgb(10 37 64 / 0.04);
+  --pt-shadow-md: 0 4px 12px rgb(10 37 64 / 0.08), 0 1px 3px rgb(10 37 64 / 0.06);
+  --pt-shadow-lg: 0 16px 40px rgb(10 37 64 / 0.16), 0 4px 12px rgb(10 37 64 / 0.08);
+  --pt-shadow-punch: 0 12px 28px rgb(10 83 148 / 0.35), 0 3px 8px rgb(2 43 77 / 0.25);
+  --pt-shadow-nav: 0 -1px 0 var(--pt-separator), 0 -6px 16px rgb(10 37 64 / 0.06);
+
+  /* ---------------------------------------------------------------------------
+     6. LAYOUT E COMPONENTES (tokens de componente)
+     ------------------------------------------------------------------------- */
+  --pt-breakpoint-desktop: 1024px;  /* referência: Tailwind `lg:` — barra inferior ↔ menu lateral */
+  --pt-touch-min: 44px;             /* alvo mínimo (Princípio IX) */
+  --pt-control-h: 48px;             /* altura de botão/campo padrão */
+  --pt-control-h-sm: 44px;          /* botões compactos (aprovar/rejeitar) — nunca menor */
+  --pt-topbar-h: 56px;
+  --pt-tabbar-h: 64px;              /* + env(safe-area-inset-bottom) */
+  --pt-sidebar-w: 264px;
+  --pt-content-max: 1120px;
+  --pt-form-max: 560px;
+  --pt-punch-size: 184px;           /* botão de ponto < 1024 px */
+  --pt-punch-size-lg: 216px;        /* botão de ponto ≥ 1024 px */
+  --pt-punch-ring: 8px;             /* anel de progresso do dia ao redor do botão */
+  --pt-badge-h: 24px;
+  --pt-counter-min: 20px;           /* contador de pendências */
+
+  /* ---------------------------------------------------------------------------
+     7. CAMADAS (z-index)
+     ------------------------------------------------------------------------- */
+  --pt-z-base: 0;
+  --pt-z-sticky: 10;     /* cabeçalho de dia/semana grudado */
+  --pt-z-nav: 20;        /* barra superior, barra inferior, sidebar */
+  --pt-z-banner: 30;     /* OfflineBanner, UpdatePrompt */
+  --pt-z-overlay: 40;    /* scrim */
+  --pt-z-modal: 50;      /* Radix Dialog content */
+  --pt-z-toast: 60;      /* sonner */
+
+  /* ---------------------------------------------------------------------------
+     8. MOVIMENTO
+     ------------------------------------------------------------------------- */
+  --pt-duration-fast: 120ms;   /* hover, pressed */
+  --pt-duration-base: 200ms;   /* abrir/fechar modal, banner */
+  --pt-duration-slow: 320ms;   /* folha subindo, confirmação do ponto */
+  --pt-duration-pulse: 1600ms; /* halo do botão de ponto quando é hora prevista */
+  --pt-ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --pt-ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Movimento reduzido: zera durações (animações viram troca instantânea de estado).
+   No app, combinar com a variante `motion-reduce:` do Tailwind para remover
+   transform/pulse; aqui garantimos que nenhum token de duração produz movimento. */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --pt-duration-fast: 0.01ms;
+    --pt-duration-base: 0.01ms;
+    --pt-duration-slow: 0.01ms;
+    --pt-duration-pulse: 0.01ms;
+  }
+}
+
+/* Tamanho do relógio em telas largas. */
+@media (min-width: 1024px) {
+  :root {
+    --pt-text-clock: var(--pt-text-clock-lg);
+    --pt-punch-size: var(--pt-punch-size-lg);
+  }
+}
+
+/* Tabela de contraste AA: ver docs/design/tokens.css (fim do arquivo). */

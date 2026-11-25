@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- Sem maximum-scale/user-scalable=no: o zoom não pode ser bloqueado (WCAG 1.4.4, Princípio IX) -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="description" content="Pontua — registre seu ponto em poucos toques, mesmo sem internet." />
+    <!-- --pt-surface, igual ao theme_color do manifest (DESIGN_DIRECTION §8) -->
+    <meta name="theme-color" content="#FFFFFF" />
+    <meta name="color-scheme" content="light" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="Pontua" />
+    <!-- Ícones gerados pelo ux-designer em public/ (T005) -->
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <!-- O link do manifest é injetado pelo vite-plugin-pwa no build -->
+    <title>Pontua</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

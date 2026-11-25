@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ponto · Mockups Pontua</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400..800&display=swap">
+<link rel="stylesheet" href="../tokens.css">
+<link rel="stylesheet" href="mockup.css">
+</head>
+<body>
+<div class="doc">
+  <header><img src="../assets/logo.png" alt="Pontua"><div><h1>Ponto — tela principal (<code>/</code>)</h1><p class="lead">US2 · FR-012, FR-013, FR-014. O botão de ponto é o elemento dominante, na metade inferior (zona do polegar). Data/hora vêm do servidor e do fuso da empresa.</p></div></header>
+  <nav class="docnav" aria-label="Telas"><a href="index.html">Índice</a><a href="login.html">Login</a><a href="welcome.html">Bem-vindo</a><a href="clock.html" aria-current="page">Ponto</a><a href="history.html">Histórico</a><a href="approvals.html">Aprovações</a><a href="position-editor.html">Cargo e jornada</a><a href="invite.html">Convite</a><a href="members.html">Membros</a><a href="settings.html">Configurações</a><a href="states.html">Estados e PWA</a></nav>
+
+  <section class="variant" data-tpl="t-work" data-sizes="360x780,1280x820">
+    <h2>1. Dia útil — responsável, 2 de 4 marcações</h2>
+    <p>Próxima marcação (Retorno, previsto 13:00) dentro de ±10 min: halo pulsante no botão (sem pulso com movimento reduzido). Anel verde = progresso do dia (decorativo; o progresso também está escrito). Contador "3" em Aprovações com texto acessível "Aprovações, 3 pendências".</p>
+  </section>
+  <section class="variant" data-tpl="t-confirm" data-sizes="360x780,1280x820">
+    <h2>2. Confirmação do registro (ConfirmModal)</h2>
+    <p>2º toque do fluxo (SC-001). Folha inferior no celular, diálogo central no computador. Foco inicial em "Confirmar" (indicado com o anel laranja de foco). <code>?acao=registrar</code> abre direto aqui.</p>
+  </section>
+  <section class="variant" data-tpl="t-done" data-sizes="360x780">
+    <h2>3. Depois de registrar — toast e espera de 1 minuto</h2>
+    <p>Toast anunciado por <code>aria-live</code>. Botão em "Aguarde 48 s" (<code>aria-disabled</code>, texto atualizado a cada 5 s). A linha nova ganha destaque verde por 2 s.</p>
+  </section>
+  <section class="variant" data-tpl="t-off" data-sizes="360x780,1280x820">
+    <h2>4. Fora do dia útil — membro (sem aba Aprovações)</h2>
+    <p>FR-014: aviso âmbar antes de marcar; a marcação feita aparece como "Extra · Pendente" com motivo "Fora do dia útil".</p>
+  </section>
+  <section class="variant" data-tpl="t-offline" data-sizes="360x780,1280x820">
+    <h2>5. Sem conexão, com fila offline e uma marcação recusada</h2>
+    <p>Banner "Sem conexão" (após 2 s offline), botão continua ativo com selo "Sem conexão", indicador "2 aguardando envio", dados de hoje com "dados de [hora]" e aviso persistente da marcação offline recusada pelo servidor (motivo + "Entendi"), abaixo do botão para não tirá-lo da zona do polegar.</p>
+  </section>
+</div>
+
+<!-- ======================= 1. Dia útil ======================= -->
+<template id="t-work" data-nav="ponto" data-role="owner" data-pending="3">
+  <h1 class="sr">Ponto</h1>
+  <div class="l2r">
+    <section class="stack" aria-label="Registrar ponto">
+      <div class="clockpanel on-dark">
+        <p class="date">terça-feira, 25 de novembro</p>
+        <time class="clock" datetime="2026-11-25T12:58-03:00">12:58</time>
+        <p class="tz">Horário de Brasília</p>
+        <ol class="steps" aria-label="Jornada de hoje">
+          <li><span class="nm">Entrada</span><span class="tm"><i data-i="check"></i>08:02</span><span class="sr">registrada</span></li>
+          <li><span class="nm">Pausa</span><span class="tm"><i data-i="check"></i>12:01</span><span class="sr">registrada</span></li>
+          <li class="next"><span class="nm">Retorno</span><span class="tm">13:00</span><span class="sr">próxima, prevista</span></li>
+          <li class="todo"><span class="nm">Saída</span><span class="tm">17:00</span><span class="sr">prevista</span></li>
+        </ol>
+      </div>
+      <div class="punchzone">
+        <div class="punchwrap">
+          <svg class="ring" viewBox="0 0 100 100" aria-hidden="true"><circle class="track" cx="50" cy="50" r="46" fill="none" stroke-width="3.5"/><circle class="prog" cx="50" cy="50" r="46" fill="none" stroke-width="3.5" pathLength="100" stroke-dasharray="50 100"/></svg>
+          <button class="punch pulse" aria-label="Registrar ponto: Retorno, previsto 13:00"><i data-i="clock" class="s40"></i><span class="pl">Registrar ponto</span><span class="ps">Retorno · previsto 13:00</span></button>
+        </div>
+        <p class="punchhint">2 de 4 marcações feitas hoje</p>
+      </div>
+    </section>
+    <div class="stack">
+      <section class="card" aria-labelledby="hoje-t">
+        <div class="card-h"><h2 id="hoje-t">Marcações de hoje</h2><a class="btn btn-tertiary btn-sm" href="#/historico">Histórico</a></div>
+        <ol class="tl list">
+          <li><span class="dot done"></span><span class="grow"><span class="nm">Entrada</span><span class="meta">previsto 08:00</span></span><span class="tm">08:02</span></li>
+          <li><span class="dot done"></span><span class="grow"><span class="nm">Pausa</span><span class="meta">previsto 12:00</span></span><span class="tm">12:01</span></li>
+          <li class="next"><span class="dot"></span><span class="grow"><span class="nm">Retorno</span><span class="meta">Próxima · previsto 13:00</span></span><span class="tm subtle">—</span></li>
+          <li><span class="dot"></span><span class="grow"><span class="nm">Saída</span><span class="meta">previsto 17:00</span></span><span class="tm subtle">—</span></li>
+        </ol>
+      </section>
+      <section class="card" aria-labelledby="sem-t">
+        <div class="card-h"><h2 id="sem-t">Esta semana</h2><span class="cap muted">24–30 nov</span></div>
+        <div class="kpis">
+          <div><span class="k">Trabalhado</span><span class="v">12:59</span></div>
+          <div><span class="k">Previsto</span><span class="v">17:36</span></div>
+          <div><span class="k">Saldo</span><span class="v bal pos" aria-label="mais 7 minutos">+00:07</span></div>
+        </div>
+      </section>
+    </div>
+  </div>
+</template>
+
+<!-- ======================= 2. Confirmação ======================= -->
+<template id="t-confirm" data-nav="ponto" data-role="owner" data-pending="3" data-overlay="o-confirm">
+  <h1 class="sr">Ponto</h1>
+  <div class="l2r">
+    <section class="stack">
+      <div class="clockpanel on-dark"><p class="date">terça-feira, 25 de novembro</p><time class="clock">12:58</time><p class="tz">Horário de Brasília</p>
+        <ol class="steps"><li><span class="nm">Entrada</span><span class="tm"><i data-i="check"></i>08:02</span></li><li><span class="nm">Pausa</span><span class="tm"><i data-i="check"></i>12:01</span></li><li class="next"><span class="nm">Retorno</span><span class="tm">13:00</span></li><li class="todo"><span class="nm">Saída</span><span class="tm">17:00</span></li></ol></div>
+      <div class="punchzone"><div class="punchwrap"><svg class="ring" viewBox="0 0 100 100" aria-hidden="true"><circle class="track" cx="50" cy="50" r="46" fill="none" stroke-width="3.5"/><circle class="prog" cx="50" cy="50" r="46" fill="none" stroke-width="3.5" pathLength="100" stroke-dasharray="50 100"/></svg><button class="punch"><i data-i="clock" class="s40"></i><span class="pl">Registrar ponto</span><span class="ps">Retorno · previsto 13:00</span></button></div></div>
+    </section>
+    <section class="card"><div class="card-h"><h2>Marcações de hoje</h2></div><ol class="tl list"><li><span class="dot done"></span><span class="grow"><span class="nm">Entrada</span></span><span class="tm">08:02</span></li><li><span class="dot done"></span><span class="grow"><span class="nm">Pausa</span></span><span class="tm">12:01</span></li></ol></section>
+  </div>
+</template>
+<template id="o-confirm">
+  <div class="sheet-h"><h2 id="{T}">Registrar ponto?</h2><button class="iconbtn" aria-label="Fechar"><i data-i="x"></i></button></div>
+  <div class="stack" style="align-items:center;text-align:center;gap:6px">
+    <time class="tnum" style="font-size:2.5rem;line-height:1;font-weight:750;letter-spacing:-.02em">12:58</time>
+    <p>Período: <strong>Retorno</strong> · previsto 13:00</p>
+    <p class="cap muted">terça-feira, 25 de novembro · Horário de Brasília</p>
+  </div>
+  <div class="sheet-f"><button class="btn btn-tertiary btn-block">Cancelar</button><button class="btn btn-primary btn-lg btn-block demo-focus"><i data-i="check"></i>Confirmar</button></div>
+</template>
+
+<!-- ======================= 3. Depois de registrar ======================= -->
+<template id="t-done" data-nav="ponto" data-role="owner" data-pending="3" data-toast="success|Retorno registrado às 12:58">
+  <h1 class="sr">Ponto</h1>
+  <section class="stack">
+    <div class="clockpanel on-dark"><p class="date">terça-feira, 25 de novembro</p><time class="clock">12:58</time><p class="tz">Horário de Brasília</p>
+      <ol class="steps"><li><span class="nm">Entrada</span><span class="tm"><i data-i="check"></i>08:02</span></li><li><span class="nm">Pausa</span><span class="tm"><i data-i="check"></i>12:01</span></li><li><span class="nm">Retorno</span><span class="tm"><i data-i="check"></i>12:58</span></li><li class="next"><span class="nm">Saída</span><span class="tm">17:00</span></li></ol></div>
+    <div class="punchzone">
+      <div class="punchwrap"><svg class="ring" viewBox="0 0 100 100" aria-hidden="true"><circle class="track" cx="50" cy="50" r="46" fill="none" stroke-width="3.5"/><circle class="prog" cx="50" cy="50" r="46" fill="none" stroke-width="3.5" pathLength="100" stroke-dasharray="75 100"/></svg>
+        <button class="punch wait" aria-disabled="true" aria-describedby="wait-d"><i data-i="hourglass" class="s40"></i><span class="pl">Aguarde 48 s</span><span class="ps" id="wait-d">para marcar de novo</span></button></div>
+      <p class="punchhint">3 de 4 marcações feitas hoje</p>
+    </div>
+    <section class="card"><div class="card-h"><h2>Marcações de hoje</h2></div>
+      <ol class="tl list"><li><span class="dot done"></span><span class="grow"><span class="nm">Entrada</span><span class="meta">previsto 08:00</span></span><span class="tm">08:02</span></li><li><span class="dot done"></span><span class="grow"><span class="nm">Pausa</span><span class="meta">previsto 12:00</span></span><span class="tm">12:01</span></li><li style="background:var(--pt-success-soft)"><span class="dot done"></span><span class="grow"><span class="nm">Retorno</span><span class="meta">previsto 13:00</span></span><span class="tm">12:58</span></li></ol></section>
+  </section>
+</template>
+
+<!-- ======================= 4. Fora do dia útil ======================= -->
+<template id="t-off" data-nav="ponto" data-role="member" data-company="Padaria Sol">
+  <h1 class="sr">Ponto</h1>
+  <div class="l2r">
+    <section class="stack">
+      <div class="clockpanel on-dark">
+        <p class="date">sábado, 29 de novembro</p>
+        <time class="clock">10:41</time>
+        <p class="tz">Horário de Brasília</p>
+        <p class="steps" style="display:flex;gap:8px;align-items:center;font-size:.875rem;color:var(--pt-text-on-dark-muted)"><i data-i="calendar-x" class="s16"></i>Sem jornada prevista hoje</p>
+      </div>
+      <div class="notice n-warning" role="status"><i data-i="triangle-alert"></i><div><strong>Hoje não é dia útil para você.</strong> As marcações de hoje ficam pendentes até o responsável aprovar.</div></div>
+      <div class="punchzone">
+        <div class="punchwrap"><button class="punch" aria-label="Registrar ponto: marcação extra, ficará pendente de aprovação"><i data-i="clock" class="s40"></i><span class="pl">Registrar ponto</span><span class="ps">Marcação extra · pendente de aprovação</span></button></div>
+      </div>
+    </section>
+    <section class="card"><div class="card-h"><h2>Marcações de hoje</h2></div>
+      <ol class="tl list">
+        <li><span class="dot pend"></span><span class="grow"><span class="nm">Extra</span><span class="meta">Fora do dia útil</span><span class="badges" style="margin-top:4px"><span class="badge bg-neutral"><i data-i="plus"></i>Extra</span><span class="badge bg-pending"><i data-i="hourglass"></i>Pendente</span></span></span><span class="tm">09:14</span></li>
+      </ol>
+    </section>
+  </div>
+</template>
+
+<!-- ======================= 5. Offline ======================= -->
+<template id="t-offline" data-nav="ponto" data-role="owner" data-pending="3" data-offline="1" data-queue="2">
+  <h1 class="sr">Ponto</h1>
+  <div class="l2r">
+    <section class="stack">
+      <div class="clockpanel on-dark"><p class="date">terça-feira, 25 de novembro</p><time class="clock">13:04</time><p class="tz">Horário do aparelho · sem conexão</p>
+        <ol class="steps"><li><span class="nm">Entrada</span><span class="tm"><i data-i="check"></i>08:02</span></li><li><span class="nm">Pausa</span><span class="tm"><i data-i="cloud-upload"></i>12:01</span><span class="sr">aguardando envio</span></li><li><span class="nm">Retorno</span><span class="tm"><i data-i="cloud-upload"></i>13:02</span><span class="sr">aguardando envio</span></li><li class="next"><span class="nm">Saída</span><span class="tm">17:00</span></li></ol></div>
+      <div class="punchzone">
+        <div class="punchwrap"><svg class="ring" viewBox="0 0 100 100" aria-hidden="true"><circle class="track" cx="50" cy="50" r="46" fill="none" stroke-width="3.5"/><circle class="prog" cx="50" cy="50" r="46" fill="none" stroke-width="3.5" pathLength="100" stroke-dasharray="50 100"/></svg>
+          <button class="punch" aria-label="Registrar ponto sem conexão: Saída. A marcação será guardada e enviada depois"><span class="offtag"><i data-i="cloud-off" class="s14"></i>Sem conexão</span><i data-i="clock" class="s40"></i><span class="pl">Registrar ponto</span><span class="ps">Saída · enviada depois</span></button></div>
+        <p class="qpill" role="status"><i data-i="cloud-upload"></i><span><strong>2</strong> aguardando envio</span></p>
+      </div>
+      <div class="notice n-danger" role="alert"><i data-i="triangle-alert"></i><div class="grow"><strong>Uma marcação feita sem conexão foi recusada.</strong><br>24/11 às 23:58 — horário fora do limite permitido.<div class="acts"><button class="btn btn-secondary btn-sm">Entendi</button></div></div></div>
+    </section>
+    <section class="card"><div class="card-h"><h2>Marcações de hoje</h2></div>
+      <div style="padding:12px 16px 0"><div class="notice n-offline"><i data-i="cloud-off"></i><span>Sem conexão — dados de 25/11 às 07:58.</span></div></div>
+      <ol class="tl list">
+        <li><span class="dot done"></span><span class="grow"><span class="nm">Entrada</span><span class="meta">previsto 08:00</span></span><span class="tm">08:02</span></li>
+        <li><span class="dot off"></span><span class="grow"><span class="nm">Pausa</span><span class="badges" style="margin-top:4px"><span class="badge bg-offline"><i data-i="cloud-upload"></i>Aguardando envio</span></span></span><span class="tm">12:01</span></li>
+        <li><span class="dot off"></span><span class="grow"><span class="nm">Retorno</span><span class="badges" style="margin-top:4px"><span class="badge bg-offline"><i data-i="cloud-upload"></i>Aguardando envio</span></span></span><span class="tm">13:02</span></li>
+        <li class="next"><span class="dot"></span><span class="grow"><span class="nm">Saída</span><span class="meta">Próxima · previsto 17:00</span></span><span class="tm subtle">—</span></li>
+      </ol>
+      <p class="cap muted" style="padding:0 16px 14px">Ao reconectar, as marcações são enviadas e ficam como "Offline · Pendente" até a aprovação.</p>
+    </section>
+  </div>
+</template>
+
+<script src="mockup.js"></script>
+</body>
+</html>

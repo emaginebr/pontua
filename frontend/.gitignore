@@ -1,0 +1,12 @@
+# Dependências e build
+node_modules/
+dist/
+dev-dist/
+coverage/
+
+# Variáveis de ambiente locais (versionado: .env.example)
+.env.local
+.env.*.local
+
+# Logs
+*.log
