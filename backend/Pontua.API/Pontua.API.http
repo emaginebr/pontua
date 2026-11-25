@@ -1,0 +1,343 @@
+### Pontua API — roteiro de validação manual (specs/001-pontua-backend-core/quickstart.md)
+#
+# Requer PostgreSQL com a migração aplicada e a API rodando (dotnet run --project Pontua.API).
+# Usa variáveis de requisição ("# @name" + {{nome.response.body.$.campo}}), suportadas pelo Visual Studio 2022
+# (17.12+), Rider e pela extensão REST Client do VS Code. Execute as requisições na ordem.
+# Ajuste as datas abaixo para o dia em que rodar o roteiro (fuso da empresa: America/Sao_Paulo).
+
+@Pontua.API_HostAddress = http://localhost:5157
+@month = 2026-11
+@today = 2026-11-25
+@yesterday = 2026-11-24
+@tooOld = 2026-10-25
+@panelStart = 2026-11-23
+@panelEnd = 2026-11-25
+@anaEmail = ana.quickstart@ex.com
+@joaoEmail = joao.quickstart@ex.com
+@password = Senha@12345
+
+GET {{Pontua.API_HostAddress}}/health
+Accept: text/plain
+
+###############################################################################
+### 1. Conta e empresa (US1)
+###############################################################################
+
+# @name registerAna
+POST {{Pontua.API_HostAddress}}/api/auth/register
+Content-Type: application/json
+
+{ "name": "Ana Silva", "email": "{{anaEmail}}", "password": "{{password}}" }
+
+###
+# Se a conta já existir (409), faça login:
+# @name loginAna
+POST {{Pontua.API_HostAddress}}/api/auth/login
+Content-Type: application/json
+
+{ "email": "{{anaEmail}}", "password": "{{password}}" }
+
+###
+@anaToken = {{loginAna.response.body.$.token}}
+
+# @name createCompany
+POST {{Pontua.API_HostAddress}}/api/companies
+Authorization: Bearer {{anaToken}}
+Content-Type: application/json
+
+{ "name": "Padaria Sol", "timeZone": "America/Sao_Paulo" }
+
+###
+@companyId = {{createCompany.response.body.$.companyId}}
+@anaMemberId = {{createCompany.response.body.$.owner.memberId}}
+
+# Esperado: isOwner = true e positionName = "Responsável".
+GET {{Pontua.API_HostAddress}}/api/companies
+Authorization: Bearer {{anaToken}}
+
+###############################################################################
+### 2. Cargo e jornada (US2)
+###############################################################################
+
+# @name createAtendente
+POST {{Pontua.API_HostAddress}}/api/companies/{{companyId}}/positions
+Authorization: Bearer {{anaToken}}
+Content-Type: application/json
+
+{
+  "name": "Atendente",
+  "schedule": {
+    "mode": "weekly",
+    "weeklyMinutes": 2640,
+    "workDays": [1, 2, 3, 4, 5],
+    "dailyMinutes": 528,
+    "periods": [
+      { "name": "Entrada", "expectedTime": "08:00" },
+      { "name": "Pausa", "expectedTime": "12:00" },
+      { "name": "Retorno", "expectedTime": "13:00" },
+      { "name": "Saída", "expectedTime": "17:48" }
+    ]
+  }
+}
+
+###
+@atendenteId = {{createAtendente.response.body.$.positionId}}
+
+# Esperado: currentSchedule.days com os 5 dias úteis expandidos.
+GET {{Pontua.API_HostAddress}}/api/companies/{{companyId}}/positions/{{atendenteId}}
+Authorization: Bearer {{anaToken}}
+
+###
+# Modo diário com sábado de 2 períodos sem horário previsto.
+POST {{Pontua.API_HostAddress}}/api/companies/{{companyId}}/positions
+Authorization: Bearer {{anaToken}}
+Content-Type: application/json
+
+{
+  "name": "Padeiro",
+  "schedule": {
+    "mode": "daily",
+    "weeklyMinutes": 2640,
+    "days": [
+      { "dayOfWeek": 1, "dailyMinutes": 480, "periods": [ { "name": "Entrada", "expectedTime": "05:00" }, { "name": "Saída", "expectedTime": "14:00" } ] },
+      { "dayOfWeek": 6, "dailyMinutes": 240, "periods": [ { "name": "Entrada", "expectedTime": null }, { "name": "Saída", "expectedTime": null } ] }
+    ]
+  }
+}
+
+###############################################################################
+### 3. Convite (US3)
+###############################################################################
+
+# @name createInvitation
+POST {{Pontua.API_HostAddress}}/api/companies/{{companyId}}/invitations
+Authorization: Bearer {{anaToken}}
+Content-Type: application/json
+
+{ "positionId": {{atendenteId}} }
+
+###
+@inviteToken = {{createInvitation.response.body.$.token}}
+
+# Público (sem autenticação).
+GET {{Pontua.API_HostAddress}}/api/invitations/{{inviteToken}}
+
+###
+# @name registerJoao
+POST {{Pontua.API_HostAddress}}/api/auth/register
+Content-Type: application/json
+
+{ "name": "João Lima", "email": "{{joaoEmail}}", "password": "{{password}}" }
+
+###
+# @name loginJoao
+POST {{Pontua.API_HostAddress}}/api/auth/login
+Content-Type: application/json
+
+{ "email": "{{joaoEmail}}", "password": "{{password}}" }
+
+###
+@joaoToken = {{loginJoao.response.body.$.token}}
+
+# @name acceptJoao
+POST {{Pontua.API_HostAddress}}/api/invitations/{{inviteToken}}/accept
+Authorization: Bearer {{joaoToken}}
+
+###
+@joaoMemberId = {{acceptJoao.response.body.$.memberId}}
+
+# Aceitar de novo → 409.
+POST {{Pontua.API_HostAddress}}/api/invitations/{{inviteToken}}/accept
+Authorization: Bearer {{joaoToken}}
+
+###
+# João aparece como Atendente.
+GET {{Pontua.API_HostAddress}}/api/companies/{{companyId}}/members
+Authorization: Bearer {{anaToken}}
+
+###############################################################################
+### 4. Marcação (US4)
+###############################################################################
+
+# Esperado: status "valid" em dia útil, periodName "Entrada".
+# @name joaoPunch
+POST {{Pontua.API_HostAddress}}/api/companies/{{companyId}}/punches
+Authorization: Bearer {{joaoToken}}
+
+###
+@joaoPunchId = {{joaoPunch.response.body.$.punchId}}
+
+# Repetir em menos de 60 s → 422.
+POST {{Pontua.API_HostAddress}}/api/companies/{{companyId}}/punches
+Authorization: Bearer {{joaoToken}}
+
+###
+GET {{Pontua.API_HostAddress}}/api/companies/{{companyId}}/punches/me?month={{month}}
+Authorization: Bearer {{joaoToken}}
+
+###
+# Offline: envie duas vezes → "created" e depois "duplicate".
+POST {{Pontua.API_HostAddress}}/api/companies/{{companyId}}/punches/offline
+Authorization: Bearer {{joaoToken}}
+Content-Type: application/json
+
+{ "items": [ { "clientId": "8f1c2a5e-0000-4000-8000-000000000001", "punchedAt": "{{yesterday}}T08:00:00-03:00" } ] }
+
+###############################################################################
+### 5. Marcação manual (US5)
+###############################################################################
+
+# Sem justificativa → 400.
+POST {{Pontua.API_HostAddress}}/api/companies/{{companyId}}/punches/manual
+Authorization: Bearer {{joaoToken}}
+Content-Type: application/json
+
+{ "workDate": "{{yesterday}}", "time": "17:48" }
+
+###
+# Ontem, com justificativa → kind "manual", status "pending", countsAsWorked false.
+# @name joaoManual
+POST {{Pontua.API_HostAddress}}/api/companies/{{companyId}}/punches/manual
+Authorization: Bearer {{joaoToken}}
+Content-Type: application/json
+
+{ "workDate": "{{yesterday}}", "time": "17:48", "justification": "Esqueci de marcar a saída." }
+
+###
+@joaoManualId = {{joaoManual.response.body.$.punchId}}
+
+# 31 dias atrás (limite padrão 30) → 422.
+POST {{Pontua.API_HostAddress}}/api/companies/{{companyId}}/punches/manual
+Authorization: Bearer {{joaoToken}}
+Content-Type: application/json
+
+{ "workDate": "{{tooOld}}", "time": "08:00", "justification": "Esqueci de marcar a entrada." }
+
+###
+# Correção da marcação normal de hoje (fica pendente; a original continua valendo até a aprovação).
+# @name joaoCorrection1
+POST {{Pontua.API_HostAddress}}/api/companies/{{companyId}}/punches/manual
+Authorization: Bearer {{joaoToken}}
+Content-Type: application/json
+
+{ "workDate": "{{today}}", "time": "07:55", "justification": "Marquei atrasado, cheguei às 07:55.", "replacesPunchId": {{joaoPunchId}} }
+
+###
+# Nova correção da mesma original → a anterior vira "cancelled" com nota "auto: nova correção".
+# @name joaoCorrection2
+POST {{Pontua.API_HostAddress}}/api/companies/{{companyId}}/punches/manual
+Authorization: Bearer {{joaoToken}}
+Content-Type: application/json
+
+{ "workDate": "{{today}}", "time": "07:58", "justification": "Corrigindo: cheguei às 07:58.", "replacesPunchId": {{joaoPunchId}} }
+
+###
+@joaoCorrectionId = {{joaoCorrection2.response.body.$.punchId}}
+
+# Histórico de status da primeira correção (cancelada automaticamente).
+GET {{Pontua.API_HostAddress}}/api/companies/{{companyId}}/punches/{{joaoCorrection1.response.body.$.punchId}}
+Authorization: Bearer {{joaoToken}}
+
+###############################################################################
+### 6. Painel e aprovação (US6)
+###############################################################################
+
+# João aparece como "pending"; Ana (sem marcações em dia útil) aparece como "missing".
+GET {{Pontua.API_HostAddress}}/api/companies/{{companyId}}/approvals?start={{panelStart}}&end={{panelEnd}}
+Authorization: Bearer {{anaToken}}
+
+###
+GET {{Pontua.API_HostAddress}}/api/companies/{{companyId}}/approvals?start={{panelStart}}&end={{panelEnd}}&type=pending&positionId={{atendenteId}}
+Authorization: Bearer {{anaToken}}
+
+###
+# Membro comum → 403.
+GET {{Pontua.API_HostAddress}}/api/companies/{{companyId}}/approvals
+Authorization: Bearer {{joaoToken}}
+
+###
+# Aprovar a manual de ontem → status "approved"; passa a contar no resumo.
+POST {{Pontua.API_HostAddress}}/api/companies/{{companyId}}/punches/{{joaoManualId}}/approve
+Authorization: Bearer {{anaToken}}
+Content-Type: application/json
+
+{ "note": "Confirmado com a equipe." }
+
+###
+# Aprovar a correção → a original vira "superseded".
+POST {{Pontua.API_HostAddress}}/api/companies/{{companyId}}/punches/{{joaoCorrectionId}}/approve
+Authorization: Bearer {{anaToken}}
+
+###
+# Aprovar de novo → 409.
+POST {{Pontua.API_HostAddress}}/api/companies/{{companyId}}/punches/{{joaoCorrectionId}}/approve
+Authorization: Bearer {{anaToken}}
+
+###
+GET {{Pontua.API_HostAddress}}/api/companies/{{companyId}}/members/{{joaoMemberId}}/summary?month={{month}}
+Authorization: Bearer {{anaToken}}
+
+###############################################################################
+### 7. Gestão de membros e transferência (US7)
+###############################################################################
+
+# João vira gestor do cargo Atendente.
+PUT {{Pontua.API_HostAddress}}/api/companies/{{companyId}}/members/{{joaoMemberId}}/manager
+Authorization: Bearer {{anaToken}}
+Content-Type: application/json
+
+{ "isManager": true, "positionIds": [ {{atendenteId}} ] }
+
+###
+# João vê só os atendentes (e não ele mesmo) no painel.
+GET {{Pontua.API_HostAddress}}/api/companies/{{companyId}}/approvals?start={{panelStart}}&end={{panelEnd}}
+Authorization: Bearer {{joaoToken}}
+
+###
+# João registra uma manual e tenta aprová-la → 403.
+# @name joaoOwnManual
+POST {{Pontua.API_HostAddress}}/api/companies/{{companyId}}/punches/manual
+Authorization: Bearer {{joaoToken}}
+Content-Type: application/json
+
+{ "workDate": "{{yesterday}}", "time": "12:00", "justification": "Esqueci de marcar a pausa." }
+
+###
+POST {{Pontua.API_HostAddress}}/api/companies/{{companyId}}/punches/{{joaoOwnManual.response.body.$.punchId}}/approve
+Authorization: Bearer {{joaoToken}}
+
+###
+# João cancela a própria manual pendente → 204.
+POST {{Pontua.API_HostAddress}}/api/companies/{{companyId}}/punches/{{joaoOwnManual.response.body.$.punchId}}/cancel
+Authorization: Bearer {{joaoToken}}
+
+###
+# Desativar o responsável → 422.
+POST {{Pontua.API_HostAddress}}/api/companies/{{companyId}}/members/{{anaMemberId}}/deactivate
+Authorization: Bearer {{anaToken}}
+
+###
+# Detalhe do membro com históricos de cargo e jornada.
+GET {{Pontua.API_HostAddress}}/api/companies/{{companyId}}/members/{{joaoMemberId}}
+Authorization: Bearer {{anaToken}}
+
+###
+# Transferir a responsabilidade para João (ele perde a designação de gestor).
+POST {{Pontua.API_HostAddress}}/api/companies/{{companyId}}/transfer-ownership
+Authorization: Bearer {{anaToken}}
+Content-Type: application/json
+
+{ "memberId": {{joaoMemberId}} }
+
+###
+# Ana deixou de ser a responsável → 403.
+PUT {{Pontua.API_HostAddress}}/api/companies/{{companyId}}/positions/{{atendenteId}}
+Authorization: Bearer {{anaToken}}
+Content-Type: application/json
+
+{ "name": "Atendente de balcão" }
+
+###
+# 8. Imutabilidade (FR-022a): no banco, os dois comandos devem falhar pelo trigger punches_immutable.
+#   UPDATE punches SET punched_at = now();
+#   DELETE FROM punches;

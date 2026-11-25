@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mockups · Pontua</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400..800&display=swap">
+<link rel="stylesheet" href="../tokens.css">
+<link rel="stylesheet" href="mockup.css">
+<style>
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; }
+  .tile { display: flex; flex-direction: column; gap: 6px; padding: 18px; text-decoration: none; color: inherit; min-height: 120px; }
+  .tile:hover { box-shadow: var(--pt-shadow-md); }
+  .tile h2 { font-size: 1.0625rem; }
+  .sw { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; }
+  .sw div { border-radius: 12px; overflow: hidden; border: 1px solid var(--pt-separator); background: var(--pt-surface); font-size: .8125rem; }
+  .sw span { display: block; height: 56px; }
+  .sw p { padding: 8px 10px; }
+  .icons { display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-end; }
+  .icons figure { display: flex; flex-direction: column; align-items: center; gap: 6px; font-size: .75rem; color: var(--pt-text-muted); }
+</style>
+</head>
+<body>
+<div class="doc">
+  <header><img src="../assets/logo.png" alt="Pontua"><div><h1>Pontua — mockups da direção "Expediente"</h1><p class="lead">Telas estáticas (T004) em 360 px e 1280 px. Abra direto no navegador; o arquivo <code>mockup.js</code> só monta as molduras e a casca do app a partir de cada <code>&lt;template&gt;</code>. Especificação em <a href="../components.md">components.md</a>, tokens em <a href="../tokens.css">tokens.css</a>, direção em <a href="../DESIGN_DIRECTION.md">DESIGN_DIRECTION.md</a>.</p></div></header>
+  <nav class="docnav" aria-label="Telas"><a href="index.html" aria-current="page">Índice</a><a href="login.html">Login</a><a href="welcome.html">Bem-vindo</a><a href="clock.html">Ponto</a><a href="history.html">Histórico</a><a href="approvals.html">Aprovações</a><a href="position-editor.html">Cargo e jornada</a><a href="invite.html">Convite</a><a href="members.html">Membros</a><a href="settings.html">Configurações</a><a href="states.html">Estados e PWA</a></nav>
+
+  <section class="variant"><h2>Telas</h2>
+    <div class="grid">
+      <a class="card tile" href="login.html"><h2>Login e cadastro</h2><p class="sm muted">Entrar, sessão expirada com erros por campo, criar conta.</p></a>
+      <a class="card tile" href="welcome.html"><h2>Bem-vindo (sem empresa)</h2><p class="sm muted">Criar empresa ou "Tenho um convite"; instalar app.</p></a>
+      <a class="card tile" href="clock.html"><h2>Ponto</h2><p class="sm muted">Dia útil, confirmação, espera de 1 min, fora do dia útil, offline com fila e recusa.</p></a>
+      <a class="card tile" href="history.html"><h2>Histórico</h2><p class="sm muted">Mês com manual pendente, filtro avançado, incluir marcação.</p></a>
+      <a class="card tile" href="approvals.html"><h2>Aprovações</h2><p class="sm muted">Painel por dia, rejeitar com motivo, vazio e conflito.</p></a>
+      <a class="card tile" href="position-editor.html"><h2>Cargo e jornada</h2><p class="sm muted">Modo semanal, modo diário com "copiar de outro dia", lista de cargos.</p></a>
+      <a class="card tile" href="invite.html"><h2>Convite</h2><p class="sm muted">Público, expirado, lista do responsável, compartilhar.</p></a>
+      <a class="card tile" href="members.html"><h2>Membros</h2><p class="sm muted">Lista + detalhe, ações, desativar a si mesmo.</p></a>
+      <a class="card tile" href="settings.html"><h2>Empresa, configurações e conta</h2><p class="sm muted">Hub, configurações, transferência, minha conta.</p></a>
+      <a class="card tile" href="states.html"><h2>Estados, selos e PWA</h2><p class="sm muted">Catálogo de selos, carregando, erro, sem conexão, atualização, instalar no iPhone.</p></a>
+    </div>
+  </section>
+
+  <section class="variant"><h2>Paleta semântica</h2><p>Contraste completo no fim de <code>tokens.css</code>.</p>
+    <div class="sw">
+      <div><span style="background:var(--pt-brand-navy)"></span><p><b>brand-navy</b><br>#022B4D</p></div>
+      <div><span style="background:var(--pt-primary)"></span><p><b>primary</b><br>#0A5394 · branco 7,84</p></div>
+      <div><span style="background:var(--pt-primary-soft)"></span><p><b>primary-soft</b><br>#E3EEF8</p></div>
+      <div><span style="background:var(--pt-brand-green)"></span><p><b>brand-green</b><br>#158212</p></div>
+      <div><span style="background:var(--pt-brand-leaf)"></span><p><b>brand-leaf</b><br>#7ED957 (sobre navy)</p></div>
+      <div><span style="background:var(--pt-success)"></span><p><b>success</b><br>#11701A · 6,26</p></div>
+      <div><span style="background:var(--pt-warning)"></span><p><b>warning</b><br>#8A4B00 · 6,80</p></div>
+      <div><span style="background:var(--pt-warning-solid)"></span><p><b>warning-solid</b><br>#F0A202 (contador)</p></div>
+      <div><span style="background:var(--pt-danger)"></span><p><b>danger</b><br>#B42318 · 6,57</p></div>
+      <div><span style="background:var(--pt-offline)"></span><p><b>offline</b><br>#4B4F9E · 7,21</p></div>
+      <div><span style="background:var(--pt-neutral)"></span><p><b>neutral</b><br>#4A5A6A · 7,09</p></div>
+      <div><span style="background:var(--pt-focus)"></span><p><b>focus</b><br>#C2410C · ≥ 4,07</p></div>
+      <div><span style="background:var(--pt-text)"></span><p><b>text</b><br>#0A2540 · 15,54</p></div>
+      <div><span style="background:var(--pt-text-muted)"></span><p><b>text-muted</b><br>#44586C · 7,35</p></div>
+      <div><span style="background:var(--pt-border)"></span><p><b>border</b><br>#6E8296 · 3,96</p></div>
+      <div><span style="background:var(--pt-bg)"></span><p><b>bg</b><br>#F3F6F9</p></div>
+    </div>
+  </section>
+
+  <section class="variant"><h2>Ícones do PWA (T005)</h2><p>Gerados de <code>docs/logomarca/logo.png</code> em <code>frontend/public/</code>. <code>theme_color</code> #FFFFFF · <code>background_color</code> #F3F6F9.</p>
+    <div class="icons card pad">
+      <figure><img src="../../../frontend/public/icon-any-192.png" width="96" height="96" alt=""><figcaption>any 192</figcaption></figure>
+      <figure><img src="../../../frontend/public/icon-maskable-192.png" width="96" height="96" alt="" style="border-radius:50%"><figcaption>maskable (máscara circular)</figcaption></figure>
+      <figure><img src="../../../frontend/public/icon-maskable-192.png" width="96" height="96" alt="" style="border-radius:22px"><figcaption>maskable (squircle)</figcaption></figure>
+      <figure><img src="../../../frontend/public/apple-touch-icon.png" width="90" height="90" alt="" style="border-radius:20px"><figcaption>apple-touch 180</figcaption></figure>
+      <figure><img src="../../../frontend/public/favicon-32.png" width="32" height="32" alt=""><figcaption>favicon 32</figcaption></figure>
+      <figure><img src="../../../frontend/public/og-image.png" width="300" alt=""><figcaption>og-image 1200 × 630</figcaption></figure>
+    </div>
+  </section>
+</div>
+<script src="mockup.js"></script>
+</body>
+</html>

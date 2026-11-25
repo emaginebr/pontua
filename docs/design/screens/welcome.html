@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bem-vindo · Mockups Pontua</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400..800&display=swap">
+<link rel="stylesheet" href="../tokens.css">
+<link rel="stylesheet" href="mockup.css">
+</head>
+<body>
+<div class="doc">
+  <header><img src="../assets/logo.png" alt="Pontua"><div><h1>Sem empresa (<code>/bem-vindo</code>, <code>/empresas/nova</code>)</h1><p class="lead">US1-4, US3-1. Usuário autenticado sem empresa: só a barra superior com a logo e "Minha conta" (sem navegação, que depende da empresa ativa).</p></div></header>
+  <nav class="docnav" aria-label="Telas"><a href="index.html">Índice</a><a href="login.html">Login</a><a href="welcome.html" aria-current="page">Bem-vindo</a><a href="clock.html">Ponto</a><a href="history.html">Histórico</a><a href="approvals.html">Aprovações</a><a href="position-editor.html">Cargo e jornada</a><a href="invite.html">Convite</a><a href="members.html">Membros</a><a href="settings.html">Configurações</a><a href="states.html">Estados e PWA</a></nav>
+
+  <section class="variant" data-tpl="t-welcome" data-sizes="360x780,1280x760">
+    <h2>1. Escolher o caminho</h2>
+    <p>Duas opções grandes (cartões-botão de 88 px+). Abaixo, o convite de instalação (InstallAppButton, variante cartão).</p>
+  </section>
+  <section class="variant" data-tpl="t-invite-paste" data-sizes="360x780">
+    <h2>2. "Tenho um convite" aberto, com erro</h2>
+    <p>O usuário cola o link; o app aceita o link inteiro ou só o código. Erro no próprio campo.</p>
+  </section>
+  <section class="variant" data-tpl="t-new" data-sizes="360x780,1280x760">
+    <h2>3. Criar empresa</h2>
+    <p>Nome obrigatório; documento opcional; fuso com o do aparelho pré-selecionado. Ao criar, a pessoa vira Responsável e cai na tela de ponto.</p>
+  </section>
+</div>
+
+<template id="t-welcome" data-shell="bare">
+  <div class="pub-card" style="margin:8px auto 0;max-width:560px">
+    <h1 style="text-align:left">Olá, Mariana</h1>
+    <p class="muted">Você ainda não faz parte de nenhuma empresa. Como quer começar?</p>
+    <a class="option" href="#/empresas/nova"><span class="oi"><i data-i="building-2" class="s24"></i></span><span><h2>Criar empresa</h2><p>Você será o responsável e poderá convidar sua equipe.</p></span><i data-i="chevron-right" class="chev"></i></a>
+    <a class="option" href="#"><span class="oi"><i data-i="link" class="s24"></i></span><span><h2>Tenho um convite</h2><p>Cole o link que você recebeu do responsável.</p></span><i data-i="chevron-right" class="chev"></i></a>
+    <div class="card pad row" style="align-items:flex-start;gap:14px;margin-top:8px">
+      <img src="../assets/logo-symbol.png" alt="" style="width:40px;height:40px;object-fit:contain">
+      <div class="grow stack" style="gap:8px"><div><h2 class="t">Instale o Pontua</h2><p class="sm muted">Abra direto da tela inicial, em tela cheia.</p></div>
+        <div class="row wrap"><button class="btn btn-primary btn-sm"><i data-i="download"></i>Instalar app</button><button class="btn btn-tertiary btn-sm">Agora não</button></div></div>
+    </div>
+  </div>
+</template>
+
+<template id="t-invite-paste" data-shell="bare">
+  <div class="pub-card" style="margin:8px auto 0;max-width:560px">
+    <h1 style="text-align:left">Olá, Mariana</h1>
+    <a class="option" href="#/empresas/nova"><span class="oi"><i data-i="building-2" class="s24"></i></span><span><h2>Criar empresa</h2><p>Você será o responsável.</p></span><i data-i="chevron-right" class="chev"></i></a>
+    <div class="option sel" style="flex-direction:column;align-items:stretch">
+      <div class="row" style="gap:14px"><span class="oi"><i data-i="link" class="s24"></i></span><h2>Tenho um convite</h2></div>
+      <div class="field invalid"><label for="lk">Link ou código do convite</label><input class="input" id="lk" value="https://pontua.app/convit" aria-invalid="true" aria-describedby="lk-err"><p class="err" id="lk-err"><i data-i="circle-alert" class="s16"></i>Este link não é um convite do Pontua. Confira se copiou o link inteiro.</p></div>
+      <button class="btn btn-primary btn-block">Abrir convite</button>
+    </div>
+  </div>
+</template>
+
+<template id="t-new" data-shell="bare">
+  <div class="pub-card" style="margin:0 auto;max-width:560px">
+    <a class="back" href="#/bem-vindo"><i data-i="chevron-left"></i>Voltar</a>
+    <h1 style="text-align:left">Criar empresa</h1>
+    <form class="stack" novalidate>
+      <div class="field"><label for="cn">Nome da empresa</label><input class="input" id="cn" autocomplete="organization" value="Padaria Sol"></div>
+      <div class="field"><label for="cd">CNPJ ou CPF <span class="opt">(opcional)</span></label><input class="input" id="cd" inputmode="numeric" placeholder="00.000.000/0000-00"></div>
+      <div class="field"><label for="tz">Fuso horário</label><select class="input" id="tz"><option>Horário de Brasília (GMT−3)</option></select><p class="help">Define o "hoje" e os horários de todas as marcações da empresa.</p></div>
+      <div class="notice n-info"><i data-i="crown"></i><span>Você será o <strong>responsável</strong> e já poderá registrar o ponto com o cargo "Responsável".</span></div>
+      <button class="btn btn-primary btn-block">Criar empresa</button>
+    </form>
+  </div>
+</template>
+
+<script src="mockup.js"></script>
+</body>
+</html>

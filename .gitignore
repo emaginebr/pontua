@@ -11,6 +11,19 @@
 *.sln.docstates
 *.env
 
+# Ambientes: arquivos com segredos (o .env.example é versionado)
+.env
+.env.prod
+.env.local
+.env.*.local
+!.env.example
+!.env.prod.example
+
+# Certificados / chaves
+*.pem
+*.key
+nginx/certs/
+
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
 

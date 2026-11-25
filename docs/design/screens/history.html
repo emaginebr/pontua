@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Histórico · Mockups Pontua</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400..800&display=swap">
+<link rel="stylesheet" href="../tokens.css">
+<link rel="stylesheet" href="mockup.css">
+</head>
+<body>
+<div class="doc">
+  <header><img src="../assets/logo.png" alt="Pontua"><div><h1>Histórico (<code>/historico</code>)</h1><p class="lead">US5 · FR-015, FR-016, FR-017, FR-024. Totais do período, semanas e dias com marcações, tipo e status. Pedidos pendentes não entram nas horas.</p></div></header>
+  <nav class="docnav" aria-label="Telas"><a href="index.html">Índice</a><a href="login.html">Login</a><a href="welcome.html">Bem-vindo</a><a href="clock.html">Ponto</a><a href="history.html" aria-current="page">Histórico</a><a href="approvals.html">Aprovações</a><a href="position-editor.html">Cargo e jornada</a><a href="invite.html">Convite</a><a href="members.html">Membros</a><a href="settings.html">Configurações</a><a href="states.html">Estados e PWA</a></nav>
+
+  <section class="variant" data-tpl="t-month" data-sizes="360x1180,1280x1100">
+    <h2>1. Novembro — correção manual pendente, dia útil sem marcação, offline aprovada, manual rejeitada</h2>
+    <p>Celular: totais no topo, dias em cartões. Computador: dias à esquerda, totais e semanas fixos à direita. Dia útil sem marcação: faixa vermelha + selo "Sem marcação" (texto + ícone). A correção pendente mostra a marcação original e a correção lado a lado.</p>
+  </section>
+  <section class="variant" data-tpl="t-adv" data-sizes="360x780,1280x820">
+    <h2>2. Filtro avançado aberto</h2>
+    <p>Data inicial e final, atalhos, validação de 366 dias. O botão "Filtro avançado" fica destacado quando há intervalo ativo.</p>
+  </section>
+  <section class="variant" data-tpl="t-manual" data-sizes="360x860">
+    <h2>3. Incluir marcação manual — erros de formulário</h2>
+    <p>R-13: o seletor de data só aceita de 26/10 (limite de 30 dias) até hoje; horário no futuro é recusado. Justificativa obrigatória.</p>
+  </section>
+</div>
+
+<template id="t-month" data-nav="historico" data-role="owner" data-pending="3">
+  <div class="page-head"><div><h1>Histórico</h1><p class="sub">Suas marcações e horas</p></div><button class="btn btn-secondary btn-sm"><i data-i="plus"></i>Incluir marcação</button></div>
+  <div class="pfilter"><button class="iconbtn" aria-label="Mês anterior"><i data-i="chevron-left"></i></button><span class="lbl" aria-live="polite">Novembro de 2026</span><button class="iconbtn" aria-label="Próximo mês" disabled style="opacity:.4"><i data-i="chevron-right"></i></button><button class="adv"><i data-i="sliders-horizontal" class="s16"></i><span>Filtro avançado</span></button></div>
+  <div class="l2r">
+    <div class="stack">
+      <section class="card hide-d" aria-label="Totais do período"><div class="kpis"><div><span class="k">Trabalhado</span><span class="v">131:12</span></div><div><span class="k">Previsto</span><span class="v">140:48</span></div><div><span class="k">Saldo</span><span class="v bal neg" aria-label="menos 9 horas e 36 minutos">−09:36</span></div></div><p class="cap muted" style="padding:0 12px 12px">Marcações pendentes não entram no total.</p></section>
+
+      <article class="card day">
+        <button class="day-h" aria-expanded="true"><span><span class="dt">ter, 25 nov</span> <span class="badge bg-today" style="margin-left:4px">Hoje</span></span><span class="sum"><span class="tnum">03:56 / 08:48</span><span class="muted">em andamento</span></span><i data-i="chevron-up" class="s16 muted"></i></button>
+        <div class="day-b"><ol class="tl list"><li><span class="dot done"></span><span class="grow"><span class="nm">Entrada</span><span class="meta">previsto 08:00</span></span><span class="tm">08:02</span></li><li><span class="dot done"></span><span class="grow"><span class="nm">Pausa</span><span class="meta">previsto 12:00</span></span><span class="tm">12:01</span></li></ol></div>
+      </article>
+
+      <article class="card day">
+        <button class="day-h" aria-expanded="true"><span class="dt">seg, 24 nov</span><span class="sum"><span class="tnum">08:50 / 08:48</span><span class="bal pos" aria-label="Saldo mais 2 minutos">+00:02</span></span><i data-i="chevron-up" class="s16 muted"></i></button>
+        <div class="day-b"><ol class="tl list">
+          <li><span class="dot done"></span><span class="grow"><span class="nm">Entrada</span><span class="meta">previsto 08:00</span></span><span class="tm">07:58</span></li>
+          <li><span class="dot done"></span><span class="grow"><span class="nm">Pausa</span></span><span class="tm">12:00</span></li>
+          <li><span class="dot done"></span><span class="grow"><span class="nm">Retorno</span></span><span class="tm">13:00</span></li>
+          <li style="align-items:flex-start"><span class="dot pend" style="margin-top:6px"></span><span class="grow"><span class="nm">Saída</span>
+              <span class="row wrap" style="gap:6px 12px;margin-top:6px">
+                <span class="stack" style="gap:2px"><span class="cap muted">Original</span><span class="row" style="gap:6px"><span class="tnum b">17:04</span><span class="badge bg-neutral">Original</span></span></span>
+                <i data-i="chevron-right" class="s16 muted"></i>
+                <span class="stack" style="gap:2px"><span class="cap muted">Correção pedida</span><span class="row wrap" style="gap:6px"><span class="tnum b">18:00</span><span class="badges"><span class="badge bg-manual"><i data-i="pen-line"></i>Manual</span><span class="badge bg-pending"><i data-i="hourglass"></i>Pendente</span></span></span></span>
+              </span>
+              <p class="just">"Fiquei até as 18h fechando o caixa e esqueci de marcar a saída certa."</p>
+            </span>
+            <button class="iconbtn" aria-label="Ações da marcação Saída 18:00"><i data-i="ellipsis"></i></button></li>
+        </ol></div>
+        <div class="day-f"><button class="btn btn-tertiary btn-sm"><i data-i="plus" class="s16"></i>Incluir marcação</button><button class="btn btn-danger-ghost btn-sm">Cancelar pedido</button></div>
+      </article>
+
+      <article class="card day off"><button class="day-h" aria-expanded="false"><span class="dt">dom, 23 nov · sáb, 22 nov</span><span class="sum muted">Folga</span><i data-i="chevron-down" class="s16 muted"></i></button></article>
+
+      <article class="card day missing">
+        <button class="day-h" aria-expanded="true"><span class="stack" style="gap:4px"><span class="dt">sex, 21 nov</span><span class="badge bg-rejected" style="align-self:flex-start"><i data-i="calendar-x"></i>Sem marcação</span></span><span class="sum"><span class="tnum">00:00 / 08:48</span><span class="bal neg" aria-label="Saldo menos 8 horas e 48 minutos">−08:48</span></span><i data-i="chevron-up" class="s16 muted"></i></button>
+        <div class="day-b"><p class="sm muted" style="padding:12px 16px 4px">Nenhuma marcação neste dia útil.</p></div>
+        <div class="day-f"><button class="btn btn-secondary btn-sm"><i data-i="plus" class="s16"></i>Incluir marcação</button></div>
+      </article>
+
+      <article class="card day">
+        <button class="day-h" aria-expanded="true"><span class="dt">qui, 20 nov</span><span class="sum"><span class="tnum">08:48 / 08:48</span><span class="bal zero" aria-label="Saldo zero">00:00</span></span><i data-i="chevron-up" class="s16 muted"></i></button>
+        <div class="day-b"><ol class="tl list">
+          <li><span class="dot done"></span><span class="grow"><span class="nm">Entrada</span></span><span class="tm">08:00</span></li>
+          <li><span class="dot done"></span><span class="grow"><span class="nm">Pausa</span><span class="badges" style="margin-top:4px"><span class="badge bg-offline"><i data-i="cloud-off"></i>Offline</span><span class="badge bg-approved"><i data-i="circle-check"></i>Aprovada</span></span></span><span class="tm">12:00</span></li>
+          <li><span class="dot done"></span><span class="grow"><span class="nm">Retorno</span></span><span class="tm">13:00</span></li>
+          <li style="align-items:flex-start"><span class="dot bad" style="margin-top:6px"></span><span class="grow"><span class="nm">Extra</span><span class="badges" style="margin-top:4px"><span class="badge bg-manual"><i data-i="pen-line"></i>Manual</span><span class="badge bg-rejected"><i data-i="circle-x"></i>Rejeitada</span></span><span class="meta" style="margin-top:4px">Analisada por Mariana Costa em 21/11 às 09:10 · Motivo: "Horário fora do expediente combinado."</span></span><span class="tm struck">19:30</span></li>
+          <li><span class="dot done"></span><span class="grow"><span class="nm">Saída</span></span><span class="tm">17:48</span></li>
+        </ol></div>
+      </article>
+    </div>
+
+    <aside class="stack sticky-d hide-m" aria-label="Resumo do período">
+      <section class="card"><div class="card-h"><h2>Novembro</h2><span class="cap muted">01–25 nov</span></div>
+        <div class="kpis"><div><span class="k">Trabalhado</span><span class="v">131:12</span></div><div><span class="k">Previsto</span><span class="v">140:48</span></div><div><span class="k">Saldo</span><span class="v bal neg">−09:36</span></div></div>
+        <p class="cap muted" style="padding:0 16px 12px">Marcações pendentes não entram no total.</p></section>
+      <section class="card"><div class="card-h"><h2>Semanas</h2></div>
+        <ol class="weeks list">
+          <li><span>24–30 nov</span><span>12:46 / 17:36</span><span class="bal zero">em andamento</span></li>
+          <li><span>17–23 nov</span><span>35:12 / 44:00</span><span class="bal neg">−08:48</span></li>
+          <li><span>10–16 nov</span><span>44:20 / 44:00</span><span class="bal pos">+00:20</span></li>
+          <li><span>03–09 nov</span><span>43:58 / 44:00</span><span class="bal neg">−00:02</span></li>
+        </ol></section>
+    </aside>
+  </div>
+</template>
+
+<template id="t-adv" data-nav="historico" data-role="owner" data-pending="3" data-overlay="o-adv">
+  <div class="page-head"><h1>Histórico</h1></div>
+  <div class="pfilter"><button class="iconbtn" aria-label="Mês anterior"><i data-i="chevron-left"></i></button><span class="lbl">Novembro de 2026</span><button class="iconbtn" aria-label="Próximo mês"><i data-i="chevron-right"></i></button><button class="adv on"><i data-i="sliders-horizontal" class="s16"></i><span>Filtro avançado</span></button></div>
+  <section class="card"><div class="kpis"><div><span class="k">Trabalhado</span><span class="v">131:12</span></div><div><span class="k">Previsto</span><span class="v">140:48</span></div><div><span class="k">Saldo</span><span class="v bal neg">−09:36</span></div></div></section>
+  <article class="card day"><button class="day-h"><span class="dt">ter, 25 nov</span><span class="sum tnum">03:56 / 08:48</span></button></article>
+  <article class="card day"><button class="day-h"><span class="dt">seg, 24 nov</span><span class="sum tnum">08:50 / 08:48</span></button></article>
+</template>
+<template id="o-adv">
+  <div class="sheet-h"><h2 id="{T}">Filtro avançado</h2><button class="iconbtn" aria-label="Fechar"><i data-i="x"></i></button></div>
+  <div class="chips" role="group" aria-label="Atalhos"><button class="chip">Esta semana</button><button class="chip on" aria-pressed="true">Semana passada</button><button class="chip">Últimos 30 dias</button></div>
+  <div class="fields-2">
+    <div class="field"><label for="di">Data inicial</label><input class="input" id="di" type="date" value="2026-11-17"></div>
+    <div class="field invalid"><label for="df">Data final</label><input class="input" id="df" type="date" value="2026-11-10" aria-invalid="true" aria-describedby="df-err"></div>
+  </div>
+  <p class="err" id="df-err" style="margin-top:-8px"><i data-i="circle-alert" class="s16"></i>A data final deve ser depois da inicial.</p>
+  <p class="help">O período pode ter até 366 dias.</p>
+  <div class="sheet-f"><button class="btn btn-tertiary btn-block">Limpar</button><button class="btn btn-primary btn-block">Aplicar</button></div>
+</template>
+
+<template id="t-manual" data-nav="historico" data-role="owner" data-pending="3" data-overlay="o-manual">
+  <div class="page-head"><h1>Histórico</h1></div>
+  <div class="pfilter"><button class="iconbtn" aria-label="Mês anterior"><i data-i="chevron-left"></i></button><span class="lbl">Novembro de 2026</span><button class="iconbtn" aria-label="Próximo mês"><i data-i="chevron-right"></i></button><button class="adv"><i data-i="sliders-horizontal" class="s16"></i><span>Filtro avançado</span></button></div>
+</template>
+<template id="o-manual">
+  <div class="sheet-h"><h2 id="{T}">Incluir marcação</h2><button class="iconbtn" aria-label="Fechar"><i data-i="x"></i></button></div>
+  <div class="notice n-danger" role="alert"><i data-i="circle-alert"></i><span>Corrija 2 campos para continuar.</span></div>
+  <div class="fields-2">
+    <div class="field"><label for="md">Data</label><input class="input" id="md" type="date" value="2026-11-21" min="2026-10-26" max="2026-11-25" aria-describedby="md-h"></div>
+    <div class="field invalid"><label for="mt">Horário</label><input class="input" id="mt" type="time" value="" aria-invalid="true" aria-describedby="mt-err"></div>
+  </div>
+  <p class="help" id="md-h" style="margin-top:-8px">Datas de 26/10 até hoje.</p>
+  <p class="err" id="mt-err" style="margin-top:-8px"><i data-i="circle-alert" class="s16"></i>Informe o horário da marcação.</p>
+  <div class="field invalid"><label for="mj">Justificativa</label><textarea class="input" id="mj" aria-invalid="true" aria-describedby="mj-err mj-c"></textarea><div class="row between"><p class="err" id="mj-err"><i data-i="circle-alert" class="s16"></i>Explique o motivo da marcação.</p><span class="cap muted" id="mj-c">0/500</span></div></div>
+  <div class="notice n-info"><i data-i="info"></i><span>O pedido fica <strong>pendente</strong> até o responsável aprovar e não conta nas horas antes disso.</span></div>
+  <div class="sheet-f"><button class="btn btn-tertiary btn-block">Cancelar</button><button class="btn btn-primary btn-block">Enviar pedido</button></div>
+</template>
+
+<script src="mockup.js"></script>
+</body>
+</html>

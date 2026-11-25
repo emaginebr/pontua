@@ -1,0 +1,22 @@
+# Instalados/gerados dentro da imagem
+node_modules
+dist
+dist-ssr
+dev-dist
+coverage
+
+# Variáveis entram por --build-arg; nenhum .env vai para o contexto do build
+.env
+.env.*
+!.env.example
+
+# Logs e editor
+*.log
+logs
+.vscode
+.idea
+.DS_Store
+
+# Docker
+Dockerfile
+.dockerignore

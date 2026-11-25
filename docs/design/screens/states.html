@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Estados e PWA · Mockups Pontua</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400..800&display=swap">
+<link rel="stylesheet" href="../tokens.css">
+<link rel="stylesheet" href="mockup.css">
+</head>
+<body>
+<div class="doc">
+  <header><img src="../assets/logo.png" alt="Pontua"><div><h1>Estados, selos e PWA</h1><p class="lead">FR-006 (carregando/vazio/erro), FR-013 e edge cases offline, R-14 (atualização e instalação). Complementa as telas; não é uma rota.</p></div></header>
+  <nav class="docnav" aria-label="Telas"><a href="index.html">Índice</a><a href="login.html">Login</a><a href="welcome.html">Bem-vindo</a><a href="clock.html">Ponto</a><a href="history.html">Histórico</a><a href="approvals.html">Aprovações</a><a href="position-editor.html">Cargo e jornada</a><a href="invite.html">Convite</a><a href="members.html">Membros</a><a href="settings.html">Configurações</a><a href="states.html" aria-current="page">Estados e PWA</a></nav>
+
+  <section class="variant">
+    <h2>Catálogo de selos (PunchBadge, RoleBadge, situação)</h2>
+    <p>Sempre texto + ícone + cor. Tipo primeiro, status depois. Marcação normal válida não tem selo.</p>
+    <div class="card pad stack" style="max-width:900px">
+      <div class="row wrap"><span class="cap muted" style="width:120px">Tipo</span><span class="badge bg-manual"><svg class="ic"><use href="#i-pen-line"/></svg>Manual</span><span class="badge bg-offline"><svg class="ic"><use href="#i-cloud-off"/></svg>Offline</span><span class="badge bg-neutral"><svg class="ic"><use href="#i-plus"/></svg>Extra</span><span class="badge bg-neutral">Original</span></div>
+      <div class="row wrap"><span class="cap muted" style="width:120px">Status</span><span class="badge bg-pending"><svg class="ic"><use href="#i-hourglass"/></svg>Pendente</span><span class="badge bg-approved"><svg class="ic"><use href="#i-circle-check"/></svg>Aprovada</span><span class="badge bg-rejected"><svg class="ic"><use href="#i-circle-x"/></svg>Rejeitada</span><span class="badge bg-neutral"><svg class="ic"><use href="#i-ban"/></svg>Cancelada</span><span class="badge bg-neutral"><svg class="ic"><use href="#i-undo-2"/></svg>Substituída</span></div>
+      <div class="row wrap"><span class="cap muted" style="width:120px">Fila local</span><span class="badge bg-offline"><svg class="ic"><use href="#i-cloud-upload"/></svg>Aguardando envio</span><span class="badge bg-rejected"><svg class="ic"><use href="#i-triangle-alert"/></svg>Recusada</span></div>
+      <div class="row wrap"><span class="cap muted" style="width:120px">Dia / painel</span><span class="badge bg-rejected"><svg class="ic"><use href="#i-calendar-x"/></svg>Sem marcação</span><span class="badge bg-pending"><svg class="ic"><use href="#i-hourglass"/></svg>2 pendências</span><span class="badge bg-today">Hoje</span></div>
+      <div class="row wrap"><span class="cap muted" style="width:120px">Papel</span><span class="badge bg-manual"><svg class="ic"><use href="#i-crown"/></svg>Responsável</span><span class="badge bg-approved"><svg class="ic"><use href="#i-shield-check"/></svg>Gestor</span><span class="badge bg-neutral">Membro</span><span class="badge bg-neutral"><svg class="ic"><use href="#i-ban"/></svg>Inativo</span></div>
+      <div class="row wrap"><span class="cap muted" style="width:120px">Combinações</span><span class="badges"><span class="badge bg-manual"><svg class="ic"><use href="#i-pen-line"/></svg>Manual</span><span class="badge bg-pending"><svg class="ic"><use href="#i-hourglass"/></svg>Pendente</span></span><span class="badges"><span class="badge bg-offline"><svg class="ic"><use href="#i-cloud-off"/></svg>Offline</span><span class="badge bg-approved"><svg class="ic"><use href="#i-circle-check"/></svg>Aprovada</span></span><span class="badges"><span class="badge bg-manual"><svg class="ic"><use href="#i-pen-line"/></svg>Manual</span><span class="badge bg-rejected"><svg class="ic"><use href="#i-circle-x"/></svg>Rejeitada</span></span></div>
+      <div class="row wrap"><span class="cap muted" style="width:120px">Saldo</span><span class="bal pos">+01:15</span><span class="bal neg">−00:30</span><span class="bal zero">00:00</span></div>
+    </div>
+  </section>
+
+  <section class="variant" data-tpl="t-loading" data-sizes="360x700">
+    <h2>1. Carregando (LoadingState)</h2>
+    <p>Skeleton com a forma do conteúdo, exibido após 300 ms; <code>aria-busy</code> + "Carregando…" oculto. Sem brilho animado com movimento reduzido.</p>
+  </section>
+  <section class="variant" data-tpl="t-error" data-sizes="360x700">
+    <h2>2. Erro ao carregar (ErrorState)</h2>
+    <p>Mensagem da API ou genérica + "Tentar de novo". <code>role="alert"</code>.</p>
+  </section>
+  <section class="variant" data-tpl="t-stale" data-sizes="360x780,1280x760">
+    <h2>3. Sem conexão em tela de leitura (StaleDataNotice + ações desabilitadas)</h2>
+    <p>Dados do cache com "dados de [data/hora]"; ações que exigem servidor ficam visíveis, desabilitadas e explicadas ("Disponível com conexão").</p>
+  </section>
+  <section class="variant" data-tpl="t-update" data-sizes="360x700,1280x700">
+    <h2>4. Nova versão (UpdatePrompt) e conexão restabelecida</h2>
+    <p>Cartão acima da barra inferior (celular) / canto inferior esquerdo do conteúdo (computador). Não rouba o foco.</p>
+  </section>
+  <section class="variant" data-tpl="t-ios" data-sizes="360x780">
+    <h2>5. Instalar no iPhone (folha com instruções)</h2>
+    <p>iOS não tem prompt nativo: passos numerados com os ícones do Safari.</p>
+  </section>
+  <section class="variant" data-tpl="t-noaccess" data-sizes="360x700">
+    <h2>6. Sem permissão e sincronização concluída</h2>
+    <p>Rota sem permissão volta para o Ponto com toast "Você não tem acesso a esta área.". Fila enviada: toast de sucesso.</p>
+  </section>
+</div>
+
+<template id="t-loading" data-nav="historico" data-role="owner" data-pending="3">
+  <div class="page-head"><h1>Histórico</h1></div>
+  <div aria-busy="true" class="stack"><span class="sr">Carregando…</span>
+    <div class="card pad stack"><div class="sk" style="width:40%"></div><div class="sk" style="height:28px;width:70%"></div></div>
+    <div class="card pad stack"><div class="sk" style="width:30%"></div><div class="sk"></div><div class="sk" style="width:85%"></div><div class="sk" style="width:60%"></div></div>
+    <div class="card pad stack"><div class="sk" style="width:30%"></div><div class="sk"></div><div class="sk" style="width:75%"></div></div>
+  </div>
+</template>
+
+<template id="t-error" data-nav="historico" data-role="owner" data-pending="3">
+  <div class="page-head"><h1>Histórico</h1></div>
+  <div class="card" role="alert"><div class="empty err"><span class="circ"><i data-i="triangle-alert" class="s40"></i></span><h3>Não foi possível carregar</h3><p>Verifique sua conexão e tente de novo.</p><button class="btn btn-secondary btn-sm"><i data-i="refresh-cw" class="s16"></i>Tentar de novo</button></div></div>
+</template>
+
+<template id="t-stale" data-nav="aprovacoes" data-role="owner" data-pending="3" data-offline="1">
+  <div class="page-head"><h1>Aprovações</h1></div>
+  <div class="notice n-offline" role="status"><i data-i="cloud-off"></i><span>Sem conexão — dados de 25/11 às 07:58.</span></div>
+  <div class="dgroup-h"><h2>Segunda, 24 de novembro</h2><span class="cap muted">1 pessoa</span></div>
+  <article class="card">
+    <div class="mhead"><span class="avatar">AS</span><div class="grow"><p class="nm">Ana Souza</p><p class="cap muted">Atendente</p></div><span class="badge bg-pending"><i data-i="hourglass"></i>1 pendência</span></div>
+    <div class="ap-item"><div><div class="row wrap" style="gap:6px"><strong>Saída</strong><span class="tnum b">18:00</span><span class="badges"><span class="badge bg-manual"><i data-i="pen-line"></i>Manual</span><span class="badge bg-pending"><i data-i="hourglass"></i>Pendente</span></span></div></div>
+      <div class="ap-acts"><button class="btn btn-sm" aria-disabled="true" aria-describedby="off-h"><i data-i="x"></i>Rejeitar</button><button class="btn btn-sm" aria-disabled="true" aria-describedby="off-h"><i data-i="check"></i>Aprovar</button></div>
+      <p class="cap muted" id="off-h" style="margin-top:6px;grid-column:1/-1"><i data-i="cloud-off" class="s14"></i> Disponível com conexão</p></div>
+  </article>
+</template>
+
+<template id="t-update" data-nav="ponto" data-role="owner" data-pending="3" data-update="1">
+  <div class="banner ok" role="status" style="border-radius:12px"><i data-i="circle-check"></i>Conexão restabelecida</div>
+  <div class="clockpanel on-dark"><p class="date">terça-feira, 25 de novembro</p><time class="clock">13:10</time><p class="tz">Horário de Brasília</p></div>
+</template>
+
+<template id="t-ios" data-nav="empresa" data-role="owner" data-pending="3" data-overlay="o-ios">
+  <div class="page-head"><h1>Minha conta</h1></div>
+</template>
+<template id="o-ios">
+  <div class="sheet-h"><h2 id="{T}">Instalar no iPhone</h2><button class="iconbtn" aria-label="Fechar"><i data-i="x"></i></button></div>
+  <ol class="steps-ios stack">
+    <li><span class="n">1</span><span>Toque em <strong>Compartilhar</strong> <i data-i="share" class="s16" style="color:var(--pt-primary)"></i> na barra do Safari.</span></li>
+    <li><span class="n">2</span><span>Escolha <strong>Adicionar à Tela de Início</strong> <i data-i="square-plus" class="s16" style="color:var(--pt-primary)"></i>.</span></li>
+    <li><span class="n">3</span><span>Toque em <strong>Adicionar</strong>. O Pontua aparece com o ícone na tela inicial.</span></li>
+  </ol>
+  <div class="sheet-f"><button class="btn btn-primary btn-block">Entendi</button></div>
+</template>
+
+<template id="t-noaccess" data-nav="ponto" data-role="member" data-toast="danger|Você não tem acesso a esta área.">
+  <div class="clockpanel on-dark"><p class="date">terça-feira, 25 de novembro</p><time class="clock">13:10</time><p class="tz">Horário de Brasília</p></div>
+  <div class="toast" role="status" style="position:static;box-shadow:var(--pt-shadow-md)"><i data-i="circle-check"></i><div class="grow"><strong>2 marcações enviadas</strong><span>Ficam pendentes até a aprovação.</span></div></div>
+</template>
+
+<script src="mockup.js"></script>
+</body>
+</html>

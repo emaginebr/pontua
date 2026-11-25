@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Membros · Mockups Pontua</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400..800&display=swap">
+<link rel="stylesheet" href="../tokens.css">
+<link rel="stylesheet" href="mockup.css">
+</head>
+<body>
+<div class="doc">
+  <header><img src="../assets/logo.png" alt="Pontua"><div><h1>Membros (<code>/empresa/membros</code>, <code>/empresa/membros/:id</code>)</h1><p class="lead">US7 · FR-020. Celular: lista → detalhe em outra tela. Computador: lista e detalhe lado a lado. Papel sempre em texto + ícone (Responsável, Gestor, Membro, Inativo).</p></div></header>
+  <nav class="docnav" aria-label="Telas"><a href="index.html">Índice</a><a href="login.html">Login</a><a href="welcome.html">Bem-vindo</a><a href="clock.html">Ponto</a><a href="history.html">Histórico</a><a href="approvals.html">Aprovações</a><a href="position-editor.html">Cargo e jornada</a><a href="invite.html">Convite</a><a href="members.html" aria-current="page">Membros</a><a href="settings.html">Configurações</a><a href="states.html">Estados e PWA</a></nav>
+
+  <section class="variant" data-tpl="t-list" data-sizes="360x780,1280x900">
+    <h2>1. Lista de membros (e detalhe ao lado no computador)</h2>
+    <p>Ativos/Inativos por controle segmentado. Detalhe: cargo e vigência, jornada (do cargo ou própria), resumo do mês com filtro, e ações do responsável.</p>
+  </section>
+  <section class="variant" data-tpl="t-detail" data-sizes="360x1080">
+    <h2>2. Detalhe do membro no celular</h2>
+    <p>Ações agrupadas no fim; "Desativar" separado como ação destrutiva.</p>
+  </section>
+  <section class="variant" data-tpl="t-self" data-sizes="360x780">
+    <h2>3. Responsável tentando desativar a si mesmo</h2>
+    <p>US7-4: explica que é preciso transferir a responsabilidade antes e oferece o atalho.</p>
+  </section>
+</div>
+
+<template id="t-list" data-nav="empresa" data-role="owner" data-pending="3">
+  <div><a class="back" href="#/empresa"><i data-i="chevron-left"></i>Empresa</a><div class="page-head"><h1>Membros</h1><button class="btn btn-secondary btn-sm"><i data-i="user-plus"></i>Convidar</button></div></div>
+  <div class="lsplit">
+    <div class="stack">
+      <div class="seg" role="radiogroup" aria-label="Situação"><label class="on"><input type="radio" name="a" checked>Ativos (9)</label><label><input type="radio" name="a">Inativos (2)</label></div>
+      <ul class="card list">
+        <li><a class="lrow" href="#"><span class="avatar">MC</span><span class="grow"><span class="b" style="display:block">Mariana Costa (você)</span><span class="sm muted">Responsável</span></span><span class="badge bg-manual"><i data-i="crown"></i>Responsável</span></a></li>
+        <li><a class="lrow sel" href="#" aria-current="true"><span class="avatar">AS</span><span class="grow"><span class="b" style="display:block">Ana Souza</span><span class="sm muted">Atendente</span></span><i data-i="chevron-right" class="chev"></i></a></li>
+        <li><a class="lrow" href="#"><span class="avatar">CM</span><span class="grow"><span class="b" style="display:block">Carla Mendes</span><span class="sm muted">Atendente</span></span><span class="badge bg-approved"><i data-i="shield-check"></i>Gestora</span></a></li>
+        <li><a class="lrow" href="#"><span class="avatar">JL</span><span class="grow"><span class="b" style="display:block">João Lima</span><span class="sm muted">Padeiro</span></span><i data-i="chevron-right" class="chev"></i></a></li>
+        <li><a class="lrow" href="#"><span class="avatar">RP</span><span class="grow"><span class="b" style="display:block">Rafael Pereira</span><span class="sm muted">Padeiro</span></span><i data-i="chevron-right" class="chev"></i></a></li>
+      </ul>
+    </div>
+    <section class="card hide-m" aria-labelledby="det-t">
+      <div class="mhead"><span class="avatar lg">AS</span><div class="grow"><h2 id="det-t" class="t" style="font-size:1.25rem">Ana Souza</h2><p class="sm muted">ana.souza@gmail.com · desde 03/11/2026</p></div><span class="badge bg-neutral">Membro</span></div>
+      <div style="padding:0 16px 16px" class="stack">
+        <dl class="dl"><dt>Cargo</dt><dd>Atendente <span class="muted">· desde 03/11/2026</span></dd><dt>Jornada</dt><dd>Do cargo · Seg–Sex · 4 marcações · 44 h/semana</dd></dl>
+        <div class="row wrap"><button class="btn btn-secondary btn-sm"><i data-i="briefcase" class="s16"></i>Trocar cargo</button><button class="btn btn-secondary btn-sm"><i data-i="calendar" class="s16"></i>Jornada própria</button><button class="btn btn-secondary btn-sm"><i data-i="shield-check" class="s16"></i>Tornar gestora</button><button class="btn btn-danger-ghost btn-sm" style="margin-left:auto"><i data-i="user-x" class="s16"></i>Desativar</button></div>
+        <div class="pfilter"><button class="iconbtn" aria-label="Mês anterior"><i data-i="chevron-left"></i></button><span class="lbl">Novembro de 2026</span><button class="iconbtn" aria-label="Próximo mês"><i data-i="chevron-right"></i></button><button class="adv"><i data-i="sliders-horizontal" class="s16"></i><span>Filtro avançado</span></button></div>
+        <div class="card"><div class="kpis big"><div><span class="k">Trabalhado</span><span class="v">131:12</span></div><div><span class="k">Previsto</span><span class="v">140:48</span></div><div><span class="k">Saldo</span><span class="v bal neg">−09:36</span></div></div></div>
+        <table class="tbl"><caption class="sr">Dias de novembro</caption><thead><tr><th>Dia</th><th>Marcações</th><th>Trabalhado</th><th>Saldo</th></tr></thead><tbody>
+          <tr><td>seg, 24 nov</td><td class="tnum">07:58 · 12:00 · 13:00 · 17:04 <span class="badge bg-pending"><i data-i="hourglass"></i>1 pendente</span></td><td class="tnum">08:06</td><td><span class="bal neg">−00:42</span></td></tr>
+          <tr><td>sex, 21 nov</td><td><span class="badge bg-rejected"><i data-i="calendar-x"></i>Sem marcação</span></td><td class="tnum">00:00</td><td><span class="bal neg">−08:48</span></td></tr>
+          <tr><td>qui, 20 nov</td><td class="tnum">08:00 · 12:00 · 13:00 · 17:48</td><td class="tnum">08:48</td><td><span class="bal zero">00:00</span></td></tr>
+        </tbody></table>
+      </div>
+    </section>
+  </div>
+</template>
+
+<template id="t-detail" data-nav="empresa" data-role="owner" data-pending="3">
+  <a class="back" href="#/empresa/membros"><i data-i="chevron-left"></i>Membros</a>
+  <div class="row" style="gap:14px"><span class="avatar lg">AS</span><div class="grow"><h1 style="font-size:1.5rem;line-height:2rem;font-weight:700">Ana Souza</h1><p class="sm muted">ana.souza@gmail.com</p></div></div>
+  <div class="badges"><span class="badge bg-neutral">Membro</span><span class="badge bg-approved"><i data-i="circle-check"></i>Ativa</span></div>
+  <section class="card pad stack"><dl class="dl"><dt>Cargo</dt><dd>Atendente<br><span class="cap muted">desde 03/11/2026</span></dd><dt>Jornada</dt><dd>Do cargo<br><span class="cap muted">Seg–Sex · 4 marcações · 44 h/semana</span></dd></dl></section>
+  <div class="pfilter"><button class="iconbtn" aria-label="Mês anterior"><i data-i="chevron-left"></i></button><span class="lbl">Novembro de 2026</span><button class="iconbtn" aria-label="Próximo mês"><i data-i="chevron-right"></i></button><button class="adv" aria-label="Filtro avançado"><i data-i="sliders-horizontal" class="s16"></i></button></div>
+  <section class="card"><div class="kpis"><div><span class="k">Trabalhado</span><span class="v">131:12</span></div><div><span class="k">Previsto</span><span class="v">140:48</span></div><div><span class="k">Saldo</span><span class="v bal neg">−09:36</span></div></div></section>
+  <article class="card day"><button class="day-h"><span class="dt">seg, 24 nov</span><span class="sum"><span class="tnum">08:06 / 08:48</span><span class="badge bg-pending"><i data-i="hourglass"></i>1 pendente</span></span><i data-i="chevron-down" class="s16 muted"></i></button></article>
+  <article class="card day missing"><button class="day-h"><span class="dt">sex, 21 nov</span><span class="sum"><span class="badge bg-rejected"><i data-i="calendar-x"></i>Sem marcação</span></span><i data-i="chevron-down" class="s16 muted"></i></button></article>
+  <section class="stack"><h2 class="section-t">Ações</h2>
+    <ul class="card list">
+      <li><a class="lrow" href="#"><i data-i="briefcase"></i><span class="grow">Trocar cargo</span><i data-i="chevron-right" class="chev"></i></a></li>
+      <li><a class="lrow" href="#"><i data-i="calendar"></i><span class="grow">Definir jornada própria</span><i data-i="chevron-right" class="chev"></i></a></li>
+      <li><a class="lrow" href="#"><i data-i="shield-check"></i><span class="grow">Tornar gestora</span><i data-i="chevron-right" class="chev"></i></a></li>
+    </ul>
+    <button class="btn btn-danger-ghost btn-block"><i data-i="user-x"></i>Desativar Ana Souza</button>
+  </section>
+</template>
+
+<template id="t-self" data-nav="empresa" data-role="owner" data-pending="3" data-overlay="o-self">
+  <a class="back" href="#"><i data-i="chevron-left"></i>Membros</a>
+  <div class="row" style="gap:14px"><span class="avatar lg">MC</span><h1 style="font-size:1.5rem;font-weight:700">Mariana Costa</h1></div>
+</template>
+<template id="o-self">
+  <div class="sheet-h"><h2 id="{T}">Não é possível desativar você</h2><button class="iconbtn" aria-label="Fechar"><i data-i="x"></i></button></div>
+  <div class="notice n-warning"><i data-i="crown"></i><span>Você é a <strong>responsável</strong> pela Padaria Sol. Transfira a responsabilidade para outro membro antes de sair da empresa.</span></div>
+  <div class="sheet-f"><button class="btn btn-tertiary btn-block">Fechar</button><button class="btn btn-primary btn-block"><i data-i="arrow-left-right"></i>Transferir responsabilidade</button></div>
+</template>
+
+<script src="mockup.js"></script>
+</body>
+</html>

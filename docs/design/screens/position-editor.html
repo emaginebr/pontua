@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cargo e jornada · Mockups Pontua</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400..800&display=swap">
+<link rel="stylesheet" href="../tokens.css">
+<link rel="stylesheet" href="mockup.css">
+</head>
+<body>
+<div class="doc">
+  <header><img src="../assets/logo.png" alt="Pontua"><div><h1>Editor de cargo e jornada (<code>/empresa/cargos/:id</code>)</h1><p class="lead">US3 · FR-018 · SC-003. Modo semanal (igual todos os dias) e diário (por dia, com "copiar de outro dia"). Reordenar por botões ↑ ↓ (arrastar é opcional, nunca o único meio). Erros no lugar exato.</p></div></header>
+  <nav class="docnav" aria-label="Telas"><a href="index.html">Índice</a><a href="login.html">Login</a><a href="welcome.html">Bem-vindo</a><a href="clock.html">Ponto</a><a href="history.html">Histórico</a><a href="approvals.html">Aprovações</a><a href="position-editor.html" aria-current="page">Cargo e jornada</a><a href="invite.html">Convite</a><a href="members.html">Membros</a><a href="settings.html">Configurações</a><a href="states.html">Estados e PWA</a></nav>
+
+  <section class="variant" data-tpl="t-weekly" data-sizes="360x1340,1280x1000">
+    <h2>1. Modo semanal — "Atendente", Seg–Sex, 4 períodos</h2>
+    <p>Dias úteis como botões de 48 px com sigla e marca "✓" (não só a cor). Resumo atualizado ao vivo (<code>aria-live</code>): "Seg–Sex · 4 marcações · 44 h/semana".</p>
+  </section>
+  <section class="variant" data-tpl="t-daily" data-sizes="360x1240,1280x960">
+    <h2>2. Modo diário — sábado diferente, copiar de outro dia e erros</h2>
+    <p>Celular: dias em painéis recolhíveis. Computador: lista de dias à esquerda, dia selecionado à direita. Erros "Dê um nome ao período" e "horário fora de ordem" ao lado do campo.</p>
+  </section>
+  <section class="variant" data-tpl="t-list" data-sizes="360x760">
+    <h2>3. Lista de cargos (<code>/empresa/cargos</code>)</h2>
+    <p>Cada cargo com resumo da jornada; a linha inteira é o link.</p>
+  </section>
+</div>
+
+<template id="t-weekly" data-nav="empresa" data-role="owner" data-pending="3">
+  <div><a class="back" href="#/empresa/cargos"><i data-i="chevron-left"></i>Cargos</a><div class="page-head"><h1>Atendente</h1></div></div>
+  <div class="l2r">
+    <form class="stack-lg" novalidate>
+      <section class="card pad stack">
+        <div class="field"><label for="pn">Nome do cargo</label><input class="input" id="pn" value="Atendente"></div>
+        <fieldset class="stack" style="gap:8px"><legend class="lbl" style="margin-bottom:8px">Jornada</legend>
+          <div class="seg" role="radiogroup" aria-label="Modo da jornada"><label class="on"><input type="radio" name="m" checked>Igual todos os dias</label><label><input type="radio" name="m">Diferente por dia</label></div>
+          <p class="help">Os mesmos períodos e carga valem para todos os dias úteis.</p></fieldset>
+      </section>
+      <section class="card pad stack">
+        <fieldset><legend class="lbl" style="margin-bottom:8px">Dias úteis</legend>
+          <div class="wdays">
+            <label class="wday on"><span aria-hidden="true">SEG</span><span class="sr">Segunda, dia útil</span></label><label class="wday on"><span aria-hidden="true">TER</span><span class="sr">Terça, dia útil</span></label><label class="wday on"><span aria-hidden="true">QUA</span><span class="sr">Quarta, dia útil</span></label><label class="wday on"><span aria-hidden="true">QUI</span><span class="sr">Quinta, dia útil</span></label><label class="wday on"><span aria-hidden="true">SEX</span><span class="sr">Sexta, dia útil</span></label><label class="wday"><span aria-hidden="true">SÁB</span><span class="sr">Sábado, não é dia útil</span></label><label class="wday"><span aria-hidden="true">DOM</span><span class="sr">Domingo, não é dia útil</span></label>
+          </div></fieldset>
+      </section>
+      <section class="card pad">
+        <div class="row between"><h2 class="t">Períodos</h2><span class="cap muted">Horário previsto é opcional</span></div>
+        <ol>
+          <li class="prow"><span class="num">1</span><div class="pf"><div class="field"><label for="a1">Nome do período</label><input class="input" id="a1" value="Entrada"></div><div class="field"><label for="b1">Previsto</label><input class="input tnum" id="b1" type="time" value="08:00"></div></div>
+            <div class="pa"><button type="button" class="iconbtn" aria-label="Mover Entrada para cima" disabled style="opacity:.35"><i data-i="arrow-up"></i></button><button type="button" class="iconbtn" aria-label="Mover Entrada para baixo"><i data-i="arrow-down"></i></button><button type="button" class="iconbtn" aria-label="Remover Entrada" style="color:var(--pt-danger)"><i data-i="trash-2"></i></button></div></li>
+          <li class="prow"><span class="num">2</span><div class="pf"><div class="field"><label for="a2">Nome do período</label><input class="input" id="a2" value="Pausa"></div><div class="field"><label for="b2">Previsto</label><input class="input tnum" id="b2" type="time" value="12:00"></div></div>
+            <div class="pa"><button type="button" class="iconbtn" aria-label="Mover Pausa para cima"><i data-i="arrow-up"></i></button><button type="button" class="iconbtn" aria-label="Mover Pausa para baixo"><i data-i="arrow-down"></i></button><button type="button" class="iconbtn" aria-label="Remover Pausa" style="color:var(--pt-danger)"><i data-i="trash-2"></i></button></div></li>
+          <li class="prow"><span class="num">3</span><div class="pf"><div class="field"><label for="a3">Nome do período</label><input class="input" id="a3" value="Retorno"></div><div class="field"><label for="b3">Previsto</label><input class="input tnum" id="b3" type="time" value="13:00"></div></div>
+            <div class="pa"><button type="button" class="iconbtn" aria-label="Mover Retorno para cima"><i data-i="arrow-up"></i></button><button type="button" class="iconbtn" aria-label="Mover Retorno para baixo"><i data-i="arrow-down"></i></button><button type="button" class="iconbtn" aria-label="Remover Retorno" style="color:var(--pt-danger)"><i data-i="trash-2"></i></button></div></li>
+          <li class="prow"><span class="num">4</span><div class="pf"><div class="field"><label for="a4">Nome do período</label><input class="input" id="a4" value="Saída"></div><div class="field"><label for="b4">Previsto</label><input class="input tnum" id="b4" type="time" value="17:48"></div></div>
+            <div class="pa"><button type="button" class="iconbtn" aria-label="Mover Saída para cima"><i data-i="arrow-up"></i></button><button type="button" class="iconbtn" aria-label="Mover Saída para baixo" disabled style="opacity:.35"><i data-i="arrow-down"></i></button><button type="button" class="iconbtn" aria-label="Remover Saída" style="color:var(--pt-danger)"><i data-i="trash-2"></i></button></div></li>
+        </ol>
+        <button type="button" class="btn btn-tertiary"><i data-i="plus"></i>Adicionar período</button>
+      </section>
+      <section class="card pad stack">
+        <div class="fields-2"><div class="field"><label for="cdia">Carga diária</label><input class="input tnum" id="cdia" value="08:48" inputmode="numeric"></div><div class="field"><label for="csem">Carga semanal</label><input class="input tnum" id="csem" value="44:00" inputmode="numeric"></div></div>
+        <div class="field"><label for="vig">Vale a partir de</label><input class="input" id="vig" type="date" value="2026-12-01"><p class="help">Marcações antes desta data seguem a jornada anterior.</p></div>
+      </section>
+      <div class="stack hide-d"><p class="summary" aria-live="polite"><i data-i="calendar"></i>Seg–Sex · 4 marcações · 44 h/semana</p><button class="btn btn-primary btn-block">Salvar cargo</button><button class="btn btn-danger-ghost btn-block">Excluir cargo</button></div>
+    </form>
+    <aside class="stack sticky-d hide-m">
+      <section class="card pad stack"><h2 class="t">Resumo</h2><p class="summary" aria-live="polite"><i data-i="calendar"></i>Seg–Sex · 4 marcações · 44 h/semana</p><p class="sm muted">5 membros com este cargo. A nova jornada vale a partir de 01/12/2026.</p><button class="btn btn-primary btn-block">Salvar cargo</button><button class="btn btn-danger-ghost btn-block">Excluir cargo</button></section>
+    </aside>
+  </div>
+</template>
+
+<template id="t-daily" data-nav="empresa" data-role="owner" data-pending="3" data-toast="success|Períodos de Segunda copiados para Sábado">
+  <div><a class="back" href="#/empresa/cargos"><i data-i="chevron-left"></i>Cargos</a><div class="page-head"><h1>Padeiro</h1></div></div>
+  <div class="notice n-danger" role="alert"><i data-i="circle-alert"></i><span>Corrija 2 campos em <strong>Sábado</strong> para salvar.</span></div>
+  <section class="card pad stack">
+    <div class="seg" role="radiogroup" aria-label="Modo da jornada"><label><input type="radio" name="m2">Igual todos os dias</label><label class="on"><input type="radio" name="m2" checked>Diferente por dia</label></div>
+  </section>
+  <div class="dsplit">
+    <div class="dtabs" role="list">
+      <div class="dtab"><div class="dtab-h"><span class="dn">Segunda</span><span class="grow cap muted">4 períodos · 07:20</span><button class="switch on" role="switch" aria-checked="true" aria-label="Segunda é dia útil"></button></div></div>
+      <div class="dtab hide-m"><div class="dtab-h"><span class="dn">Terça</span><span class="grow cap muted">4 períodos · 07:20</span><button class="switch on" role="switch" aria-checked="true" aria-label="Terça é dia útil"></button></div></div>
+      <div class="dtab hide-m"><div class="dtab-h"><span class="dn">Quarta</span><span class="grow cap muted">4 períodos · 07:20</span><button class="switch on" role="switch" aria-checked="true" aria-label="Quarta é dia útil"></button></div></div>
+      <div class="dtab hide-m"><div class="dtab-h"><span class="dn">Quinta</span><span class="grow cap muted">4 períodos · 07:20</span><button class="switch on" role="switch" aria-checked="true" aria-label="Quinta é dia útil"></button></div></div>
+      <div class="dtab hide-m"><div class="dtab-h"><span class="dn">Sexta</span><span class="grow cap muted">4 períodos · 07:20</span><button class="switch on" role="switch" aria-checked="true" aria-label="Sexta é dia útil"></button></div></div>
+      <div class="dtab sel"><div class="dtab-h"><span class="dn">Sábado</span><span class="grow cap" style="color:var(--pt-danger);font-weight:650"><i data-i="circle-alert" class="s14"></i> 2 erros</span><button class="switch on" role="switch" aria-checked="true" aria-label="Sábado é dia útil"></button></div></div>
+      <div class="dtab"><div class="dtab-h"><span class="dn">Domingo</span><span class="grow cap muted">Folga</span><button class="switch" role="switch" aria-checked="false" aria-label="Domingo é dia útil"></button></div></div>
+    </div>
+    <section class="card pad stack" aria-labelledby="sab-t">
+      <div class="row between wrap"><h2 class="t" id="sab-t">Sábado</h2><button class="btn btn-secondary btn-sm"><i data-i="copy" class="s16"></i>Copiar de outro dia</button></div>
+      <ol>
+        <li class="prow"><span class="num">1</span><div class="pf"><div class="field"><label for="s1">Nome do período</label><input class="input" id="s1" value="Entrada"></div><div class="field"><label for="t1">Previsto</label><input class="input" id="t1" type="time" value="05:00"></div></div>
+          <div class="pa"><button type="button" class="iconbtn" aria-label="Mover Entrada para baixo"><i data-i="arrow-down"></i></button><button type="button" class="iconbtn" aria-label="Remover Entrada" style="color:var(--pt-danger)"><i data-i="trash-2"></i></button></div></li>
+        <li class="prow"><span class="num">2</span><div class="pf"><div class="field invalid"><label for="s2">Nome do período</label><input class="input" id="s2" value="" aria-invalid="true" aria-describedby="s2-err"><p class="err" id="s2-err"><i data-i="circle-alert" class="s16"></i>Dê um nome ao período.</p></div><div class="field invalid"><label for="t2">Previsto</label><input class="input" id="t2" type="time" value="04:30" aria-invalid="true" aria-describedby="t2-err"></div></div>
+          <div class="pa"><button type="button" class="iconbtn" aria-label="Mover período 2 para cima"><i data-i="arrow-up"></i></button><button type="button" class="iconbtn" aria-label="Remover período 2" style="color:var(--pt-danger)"><i data-i="trash-2"></i></button></div>
+          <p class="err" id="t2-err" style="grid-column:2"><i data-i="circle-alert" class="s16"></i>O horário deve ser depois de Entrada (05:00).</p></li>
+      </ol>
+      <button type="button" class="btn btn-tertiary" style="align-self:flex-start"><i data-i="plus"></i>Adicionar período</button>
+      <div class="field" style="max-width:240px"><label for="cs">Carga do dia</label><input class="input tnum" id="cs" value="04:00"></div>
+    </section>
+  </div>
+  <p class="summary" aria-live="polite"><i data-i="calendar"></i>Seg–Sáb · 4 marcações (Sáb: 2) · 40 h/semana</p>
+  <div class="row wrap" style="justify-content:flex-end"><button class="btn btn-primary" style="min-width:200px;flex:1;max-width:320px">Salvar cargo</button></div>
+</template>
+
+<template id="t-list" data-nav="empresa" data-role="owner" data-pending="3">
+  <div><a class="back" href="#/empresa"><i data-i="chevron-left"></i>Empresa</a><div class="page-head"><h1>Cargos</h1><button class="btn btn-primary btn-sm"><i data-i="plus"></i>Novo cargo</button></div></div>
+  <ul class="card list">
+    <li><a class="lrow" href="#"><span class="grow"><span class="b" style="display:block">Atendente</span><span class="sm muted">Seg–Sex · 4 marcações · 44 h/semana</span><span class="cap subtle" style="display:block">5 membros</span></span><i data-i="chevron-right" class="chev"></i></a></li>
+    <li><a class="lrow" href="#"><span class="grow"><span class="b" style="display:block">Padeiro</span><span class="sm muted">Seg–Sáb · por dia · 40 h/semana</span><span class="cap subtle" style="display:block">3 membros</span></span><i data-i="chevron-right" class="chev"></i></a></li>
+    <li><a class="lrow" href="#"><span class="grow"><span class="b" style="display:block">Responsável</span><span class="sm muted">Seg–Sex · 4 marcações · 44 h/semana</span><span class="cap subtle" style="display:block">1 membro</span></span><i data-i="chevron-right" class="chev"></i></a></li>
+  </ul>
+</template>
+
+<script src="mockup.js"></script>
+</body>
+</html>

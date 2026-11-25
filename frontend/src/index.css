@@ -1,0 +1,135 @@
+/* T010 — Tailwind 4 + tokens do design (docs/design). Ordem: Tailwind → tokens → @theme. */
+@import "tailwindcss";
+@import "./styles/tokens.css";
+@import "./styles/theme.css";
+
+/* Base do app (complementa a base de theme.css: foco visível e reduced-motion) */
+@layer base {
+  body {
+    min-height: 100dvh;
+    font-size: var(--pt-text-body);
+    line-height: var(--pt-text-body--lh);
+    font-weight: var(--pt-text-body--wt);
+    -webkit-font-smoothing: antialiased;
+    overflow-wrap: anywhere;
+  }
+
+  h1,
+  h2,
+  h3 {
+    letter-spacing: var(--pt-tracking-tight);
+  }
+
+  /* Horas e saldos: algarismos tabulares (Plus Jakarta Sans tem `tnum`) */
+  time,
+  .tabular {
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Destino do "Pular para o conteúdo" e h1 focado na troca de rota: sem anel no clique */
+  [tabindex="-1"]:focus:not(:focus-visible) {
+    outline: none;
+  }
+}
+
+/*
+ * Toasts (sonner) com os tokens — components.md §8.3.
+ * FORA de @layer de propósito: o sonner injeta a CSS dele sem camada, e CSS sem camada vence
+ * qualquer @layer (por isso a faixa de 4 px e o fechar de 44 px não apareciam — revisão T070,
+ * I-04). O prefixo `html` dá especificidade acima dos seletores do sonner.
+ */
+html [data-sonner-toaster] {
+  --width: min(420px, calc(100vw - 32px));
+  /* Fechar no canto superior DIREITO, dentro do cartão */
+  --toast-close-button-start: unset;
+  --toast-close-button-end: 0;
+  --toast-close-button-transform: none;
+  z-index: var(--pt-z-toast) !important;
+  font-family: var(--pt-font-sans);
+}
+
+html [data-sonner-toaster] [data-sonner-toast][data-styled="true"] {
+  background: var(--pt-surface);
+  color: var(--pt-text);
+  border: 1px solid var(--pt-separator);
+  border-left: 4px solid var(--pt-primary);
+  border-radius: var(--pt-radius-lg);
+  box-shadow: var(--pt-shadow-lg);
+  padding: 12px 52px 12px 14px;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+/* Faixa de 4 px e ícone na cor do tipo */
+html [data-sonner-toaster] [data-sonner-toast][data-type="success"] {
+  border-left-color: var(--pt-success);
+}
+html [data-sonner-toaster] [data-sonner-toast][data-type="success"] [data-icon] {
+  color: var(--pt-success);
+}
+html [data-sonner-toaster] [data-sonner-toast][data-type="error"] {
+  border-left-color: var(--pt-danger);
+}
+html [data-sonner-toaster] [data-sonner-toast][data-type="error"] [data-icon] {
+  color: var(--pt-danger);
+}
+html [data-sonner-toaster] [data-sonner-toast][data-type="warning"] {
+  border-left-color: var(--pt-warning-solid);
+}
+html [data-sonner-toaster] [data-sonner-toast][data-type="warning"] [data-icon] {
+  color: var(--pt-warning);
+}
+html [data-sonner-toaster] [data-sonner-toast][data-type="info"] [data-icon] {
+  color: var(--pt-primary);
+}
+/* Tipo "offline" (toast padrão com a classe `pt-toast-offline`, ver utils/notify.ts) */
+html [data-sonner-toaster] [data-sonner-toast].pt-toast-offline {
+  border-left-color: var(--pt-offline);
+}
+html [data-sonner-toaster] [data-sonner-toast].pt-toast-offline [data-icon] {
+  color: var(--pt-offline);
+}
+
+html [data-sonner-toaster] [data-sonner-toast][data-styled="true"] [data-icon] {
+  width: 20px;
+  height: 20px;
+  margin-top: 0;
+}
+
+html [data-sonner-toaster] [data-sonner-toast][data-styled="true"] [data-title] {
+  font-size: var(--pt-text-body-sm);
+  line-height: var(--pt-text-body-sm--lh);
+  font-weight: 650;
+}
+
+html [data-sonner-toaster] [data-sonner-toast][data-styled="true"] [data-description] {
+  font-size: var(--pt-text-caption);
+  line-height: var(--pt-text-caption--lh);
+  color: var(--pt-text-muted);
+}
+
+/* Botão de fechar com alvo de 44 px no canto superior direito (Princípio IX) */
+html [data-sonner-toaster] [data-sonner-toast][data-styled="true"] [data-close-button] {
+  top: 0;
+  right: 0;
+  left: auto;
+  width: 44px;
+  height: 44px;
+  transform: none;
+  background: transparent;
+  color: var(--pt-text-muted);
+  border: 0;
+  border-radius: var(--pt-radius-lg);
+}
+html [data-sonner-toaster] [data-sonner-toast][data-styled="true"] [data-close-button] svg {
+  width: 18px;
+  height: 18px;
+}
+html [data-sonner-toaster] [data-sonner-toast][data-styled="true"]:hover [data-close-button]:hover {
+  background: var(--pt-surface-2);
+}
+html [data-sonner-toaster] [data-sonner-toast][data-styled="true"] [data-close-button]:focus-visible {
+  outline: var(--pt-focus-width) solid var(--pt-focus);
+  outline-offset: -4px;
+  box-shadow: none;
+}

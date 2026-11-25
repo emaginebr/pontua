@@ -1,0 +1,17 @@
+**/bin/
+**/obj/
+**/.vs/
+**/.vscode/
+**/.idea/
+**/*.user
+**/*.suo
+**/TestResults/
+**/*.env
+**/.env*
+**/appsettings.*.local.json
+Pontua.Tests/
+.config/
+*.md
+Dockerfile
+.dockerignore
+.gitignore
