@@ -1,0 +1,98 @@
+# Pontua — ambiente de homologação (ASPNETCORE_ENVIRONMENT=Docker).
+# Docker roda SOMENTE no WSL2 (skill wsl-docker):
+#   wsl --cd /mnt/c/repos/pontua -e docker compose up -d --build
+# Variáveis vêm do .env (não versionado); modelo em .env.example.
+
+name: pontua
+
+services:
+  db:
+    image: postgres:17-alpine
+    container_name: pontua-db
+    restart: unless-stopped
+    ports:
+      - "${DB_PORT:-5432}:5432"
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    volumes:
+      - pontua_pgdata:/var/lib/postgresql/data
+      # Cria também pontua_dev e pontua_test (só na primeira inicialização do volume).
+      - ./docker/postgres/init:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks:
+      - pontua-network
+
+  api:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    image: pontua-api:homolog
+    container_name: pontua-api
+    restart: unless-stopped
+    ports:
+      - "${API_PORT:-5080}:8080"
+    environment:
+      ASPNETCORE_ENVIRONMENT: Docker
+      ConnectionStrings__PontuaContext: Host=db;Port=5432;Database=${POSTGRES_DB};Username=${POSTGRES_USER};Password=${POSTGRES_PASSWORD}
+      Jwt__Secret: ${JWT_SECRET}
+      Jwt__ExpirationHours: ${JWT_EXPIRATION_HOURS:-12}
+      Google__ClientId: ${GOOGLE_CLIENT_ID:-}
+      # Link do convite e CORS apontam para o frontend de homologação (pontua-frontend, porta 8081).
+      # O frontend chama a API pela mesma origem (proxy do nginx); CORS fica para o dev (Vite 5173)
+      # e para quem chamar a API direto na 5080.
+      App__FrontendBaseUrl: ${APP_FRONTEND_BASE_URL:-http://localhost:8081}
+      Cors__AllowedOrigins__0: ${CORS_ALLOWED_ORIGIN:-http://localhost:8081}
+      Cors__AllowedOrigins__1: ${CORS_ALLOWED_ORIGIN_DEV:-http://localhost:5173}
+    depends_on:
+      db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://localhost:8080/health || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+    networks:
+      - pontua-network
+
+  # frontend: PWA React (Vite) servido por nginx (research R-15). As VITE_* são embutidas no
+  # bundle no build: mudou o .env, rode `docker compose up -d --build frontend`.
+  # VITE_API_URL vazio = mesma origem (o nginx encaminha /api/ e /health para api:8080).
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        VITE_API_URL: ${VITE_API_URL:-}
+        VITE_GOOGLE_CLIENT_ID: ${VITE_GOOGLE_CLIENT_ID:-}
+    image: pontua-frontend:homolog
+    container_name: pontua-frontend
+    restart: unless-stopped
+    ports:
+      - "${FRONTEND_PORT:-8081}:80"
+    depends_on:
+      api:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q -O /dev/null http://127.0.0.1/healthz || exit 1"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+      start_period: 5s
+    networks:
+      - pontua-network
+
+volumes:
+  pontua_pgdata:
+    name: pontua_pgdata
+
+networks:
+  pontua-network:
+    name: pontua-network
+    driver: bridge
