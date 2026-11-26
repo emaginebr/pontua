@@ -13,15 +13,32 @@ Produção roda com `ASPNETCORE_ENVIRONMENT=Production` num cluster Kubernetes (
 2. **Secrets** — injetados como variáveis de ambiente no padrão `Secao__Chave`
    (sem `AddEnvironmentVariables("PREFIXO")`):
 
-   | Variável | Conteúdo |
-   |---|---|
-   | `ConnectionStrings__PontuaContext` | Connection string Npgsql do PostgreSQL de produção (≥ 15) |
-   | `Jwt__Secret` | Segredo aleatório, mínimo 32 bytes (recomendado ≥ 64) |
-   | `Google__ClientId` | OAuth Client ID do domínio de produção |
+   | Variável | Obrigatória | Conteúdo |
+   |---|---|---|
+   | `ConnectionStrings__PontuaContext` | **sim** | Connection string Npgsql do PostgreSQL de produção (≥ 15) |
+   | `Jwt__Secret` | **sim** | Segredo aleatório, mínimo 32 bytes (recomendado ≥ 64); a API não sobe sem ele |
+   | `Google__ClientId` | **opcional** | OAuth Client ID do domínio de produção. Sem ele a API sobe normalmente, o login com Google fica desabilitado (`POST /api/auth/google` → 404 "Login com Google não está habilitado neste ambiente.") e o botão some no PWA, cujo build arg `VITE_GOOGLE_CLIENT_ID` também é opcional |
 
-3. **Ingress/TLS**: Ingress (ou Gateway API) com TLS terminado no cluster (ex.: cert-manager +
-   Let's Encrypt) para a API e o PWA. Confirmar `App:FrontendBaseUrl` e `Cors:AllowedOrigins` em
-   `appsettings.Production.json` — hoje estão com o domínio **provisório** `https://app.pontua.com.br`.
+   **Para a futura pipeline (skill `k8s-deploy`)** — mapeamento de GitHub *secrets*/*variables*:
+
+   | Origem no GitHub | Tipo | Obrigatória | Destino |
+   |---|---|---|---|
+   | `PONTUA_CONNECTION_STRING` | secret | **sim** | `ConnectionStrings__PontuaContext` |
+   | `PONTUA_JWT_SECRET` | secret | **sim** (≥ 32 bytes) | `Jwt__Secret` |
+   | `PONTUA_GOOGLE_CLIENT_ID` | variable | **opcional** | `Google__ClientId` (API) e build arg `VITE_GOOGLE_CLIENT_ID` (PWA) |
+
+   - O passo de validação de secrets só pode falhar na ausência de `PONTUA_CONNECTION_STRING` ou de
+     `PONTUA_JWT_SECRET` (e se este tiver menos de 32 bytes); **nunca** por falta de
+     `PONTUA_GOOGLE_CLIENT_ID`.
+   - Com `PONTUA_GOOGLE_CLIENT_ID` vazia: não criar a chave `Google__ClientId` no Secret/ConfigMap
+     (ou criá-la com valor vazio) e passar `VITE_GOOGLE_CLIENT_ID` vazio no build da imagem do frontend.
+
+3. **Domínio, Ingress e TLS**: o domínio de produção é **`https://pontua.site`**, com frontend e API
+   na mesma origem — o Ingress (ou Gateway API) roteia `/api/` e `/health` para o Service da API e
+   todo o resto (`/`) para o PWA. TLS terminado no cluster (ex.: cert-manager + Let's Encrypt).
+   `App:FrontendBaseUrl` (`https://pontua.site`, links de convite em `https://pontua.site/convite/{token}`)
+   e `Cors:AllowedOrigins` (`["https://pontua.site"]`) já estão configurados para esse domínio em
+   `appsettings.Production.json`.
    Avaliar `ForwardedHeaders` na API para respeitar `X-Forwarded-Proto` atrás do Ingress.
 4. **Migrações**: não aplicar no startup das réplicas. Usar um `Job` (ou um único init container)
    com *migration bundle* (`dotnet ef migrations bundle`) ou script idempotente

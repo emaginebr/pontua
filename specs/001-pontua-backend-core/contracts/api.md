@@ -38,7 +38,7 @@ intervalo > 366 dias.
 |---|---|---|
 | 🔓 `POST` | `/api/auth/register` | `{ name, email, password }` (senha ≥ 8) → `201 AuthResult`; 409 e-mail em uso |
 | 🔓 `POST` | `/api/auth/login` | `{ email, password }` → `200 AuthResult`; 401 `"E-mail ou senha inválidos."` |
-| 🔓 `POST` | `/api/auth/google` | `{ idToken }` → `200 AuthResult` (`isNewUser` quando criado agora); 401 token inválido |
+| 🔓 `POST` | `/api/auth/google` | `{ idToken }` → `200 AuthResult` (`isNewUser` quando criado agora); 401 token inválido; 404 login com Google desabilitado (ver nota) |
 | `GET` | `/api/auth/me` | `UserInfo` |
 | `PUT` | `/api/auth/me` | `{ name }` → `UserInfo` |
 | `PUT` | `/api/auth/me/password` | `{ currentPassword?, newPassword }` (`currentPassword` obrigatório se já houver senha) → 204 |
@@ -48,6 +48,15 @@ intervalo > 366 dias.
 { "token": "eyJ...", "expiresAt": "2026-11-25T23:00:00Z", "isNewUser": false, "user": { /* UserInfo */ } }
 // UserInfo
 { "userId": 7, "name": "Ana Silva", "email": "ana@ex.com", "hasPassword": true, "hasGoogle": false }
+```
+
+**Nota — login com Google opcional**: o login com Google só fica habilitado quando `Google__ClientId`
+(`Google:ClientId`) está configurado. Sem ele (ausente, vazio ou só espaços) a API sobe normalmente,
+os demais endpoints de Auth funcionam e `POST /api/auth/google` responde **404** sem consultar o
+Google (o PWA também esconde o botão quando `VITE_GOOGLE_CLIENT_ID` está vazio):
+
+```json
+{ "sucesso": false, "mensagem": "Login com Google não está habilitado neste ambiente.", "erros": [] }
 ```
 
 ---
@@ -162,7 +171,7 @@ imediato. O cargo é editável como qualquer outro.
 ```json
 // InvitationInfo
 { "invitationId": 5, "position": { "positionId": 4, "name": "Atendente" }, "token": "q3...",
-  "url": "https://app.pontua.com.br/convite/q3...", "status": "active", "expiresAt": "...",
+  "url": "https://pontua.site/convite/q3...", "status": "active", "expiresAt": "...",
   "acceptedCount": 3, "createdBy": "Ana Silva", "createdAt": "..." }
 ```
 

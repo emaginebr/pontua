@@ -54,7 +54,7 @@ describe("WelcomePage", () => {
     const user = userEvent.setup();
 
     await user.click(screen.getByRole("button", { name: /Tenho um convite/ }));
-    await user.type(screen.getByLabelText("Link ou código do convite"), `https://app.pontua.com.br/convite/${TOKEN}`);
+    await user.type(screen.getByLabelText("Link ou código do convite"), `https://pontua.site/convite/${TOKEN}`);
     await user.click(screen.getByRole("button", { name: "Abrir convite" }));
 
     expect(await screen.findByText("Tela do convite")).toBeInTheDocument();
