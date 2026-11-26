@@ -63,11 +63,13 @@ public class AuthController : ControllerBase
     /// <summary>Entra com a conta Google (ID token); cria a conta ou vincula a uma existente com o mesmo e-mail.</summary>
     /// <response code="200">Token emitido (<c>isNewUser</c> quando a conta foi criada agora).</response>
     /// <response code="401">Token do Google inválido.</response>
+    /// <response code="404">"Login com Google não está habilitado neste ambiente." (<c>Google:ClientId</c> não configurado).</response>
     [HttpPost("google")]
     [AllowAnonymous]
     [ProducesResponseType(typeof(AuthResult), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ErrorResult), StatusCodes.Status400BadRequest)]
     [ProducesResponseType(typeof(ErrorResult), StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(typeof(ErrorResult), StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(ErrorResult), StatusCodes.Status409Conflict)]
     public async Task<IActionResult> Google([FromBody] GoogleLoginInfo info)
     {

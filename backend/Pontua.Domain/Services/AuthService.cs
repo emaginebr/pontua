@@ -1,11 +1,13 @@
 using FluentValidation;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Pontua.Domain.Exceptions;
 using Pontua.Domain.Interfaces;
 using Pontua.Domain.Models;
 using Pontua.Domain.Validators;
 using Pontua.DTO.Auth;
+using Pontua.DTO.Settings;
 using Pontua.Infra.Interfaces.AppServices;
 using Pontua.Infra.Interfaces.Repository;
 
@@ -20,11 +22,13 @@ public class AuthService : IAuthService
     public const string INVALID_CREDENTIALS_MESSAGE = "E-mail ou senha inválidos.";
     public const string INVALID_GOOGLE_TOKEN_MESSAGE = "Token do Google inválido.";
     public const string EMAIL_IN_USE_MESSAGE = "Este e-mail já está em uso.";
+    public const string GOOGLE_LOGIN_DISABLED_MESSAGE = "Login com Google não está habilitado neste ambiente.";
 
     private readonly IUserRepository<User> _userRepository;
     private readonly IPasswordHasher<User> _passwordHasher;
     private readonly ITokenService _tokenService;
     private readonly IGoogleTokenAppService _googleTokenAppService;
+    private readonly GoogleSettings _googleSettings;
     private readonly IClock _clock;
     private readonly IValidator<RegisterInfo> _registerValidator;
     private readonly IValidator<LoginInfo> _loginValidator;
@@ -38,6 +42,7 @@ public class AuthService : IAuthService
         IPasswordHasher<User> passwordHasher,
         ITokenService tokenService,
         IGoogleTokenAppService googleTokenAppService,
+        IOptions<GoogleSettings> googleSettings,
         IClock clock,
         IValidator<RegisterInfo> registerValidator,
         IValidator<LoginInfo> loginValidator,
@@ -50,6 +55,7 @@ public class AuthService : IAuthService
         _passwordHasher = passwordHasher;
         _tokenService = tokenService;
         _googleTokenAppService = googleTokenAppService;
+        _googleSettings = googleSettings.Value;
         _clock = clock;
         _registerValidator = registerValidator;
         _loginValidator = loginValidator;
@@ -107,6 +113,13 @@ public class AuthService : IAuthService
 
     public async Task<AuthResult> GoogleLoginAsync(GoogleLoginInfo info)
     {
+        // Login com Google é opcional: sem Google:ClientId o recurso não existe neste ambiente (404), sem chamar o Google.
+        if (!_googleSettings.IsEnabled)
+        {
+            _logger.LogInformation("POST /api/auth/google recusado: Google:ClientId não configurado (login com Google desabilitado).");
+            throw new NotFoundException(GOOGLE_LOGIN_DISABLED_MESSAGE);
+        }
+
         await _googleLoginValidator.EnsureValidAsync(info);
 
         var google = await _googleTokenAppService.ValidateAsync(info.IdToken)

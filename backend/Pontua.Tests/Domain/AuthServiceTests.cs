@@ -1,6 +1,7 @@
 using FluentAssertions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging.Abstractions;
+using Microsoft.Extensions.Options;
 using Moq;
 using Pontua.Domain.Exceptions;
 using Pontua.Domain.Interfaces;
@@ -8,6 +9,7 @@ using Pontua.Domain.Models;
 using Pontua.Domain.Services;
 using Pontua.Domain.Validators;
 using Pontua.DTO.Auth;
+using Pontua.DTO.Settings;
 using Pontua.Infra.Interfaces.AppServices;
 using Pontua.Infra.Interfaces.Repository;
 
@@ -17,6 +19,7 @@ public class AuthServiceTests
 {
     private static readonly DateTime NOW = new(2026, 11, 25, 15, 0, 0, DateTimeKind.Utc);
     private const string PASSWORD = "senha-forte-123";
+    private const string GOOGLE_CLIENT_ID = "pontua-test.apps.googleusercontent.com";
 
     private readonly Mock<IUserRepository<User>> _users = new();
     private readonly Mock<ITokenService> _tokens = new();
@@ -49,11 +52,16 @@ public class AuthServiceTests
             });
         _users.Setup(r => r.UpdateAsync(It.IsAny<User>())).ReturnsAsync((User user) => user);
 
-        _sut = new AuthService(
+        _sut = CreateSut(GOOGLE_CLIENT_ID);
+    }
+
+    private AuthService CreateSut(string googleClientId) =>
+        new(
             _users.Object,
             _hasher,
             _tokens.Object,
             _google.Object,
+            Options.Create(new GoogleSettings { ClientId = googleClientId }),
             _clock.Object,
             new RegisterInfoValidator(),
             new LoginInfoValidator(),
@@ -61,7 +69,6 @@ public class AuthServiceTests
             new UserUpdateInfoValidator(),
             new PasswordUpdateInfoValidator(),
             NullLogger<AuthService>.Instance);
-    }
 
     private User AddUser(string email, string? password = PASSWORD, string? googleSubject = null)
     {
@@ -158,6 +165,47 @@ public class AuthServiceTests
 
         (await act.Should().ThrowAsync<UnauthorizedException>())
             .WithMessage(AuthService.INVALID_CREDENTIALS_MESSAGE);
+    }
+
+    [Theory]
+    [InlineData("")]
+    [InlineData("   ")]
+    public async Task GoogleLoginAsync_ShouldThrowNotFoundWithoutCallingGoogle_WhenClientIdIsNotConfigured(string clientId)
+    {
+        var sut = CreateSut(clientId);
+
+        var act = () => sut.GoogleLoginAsync(new GoogleLoginInfo { IdToken = "x" });
+
+        (await act.Should().ThrowAsync<NotFoundException>())
+            .WithMessage(AuthService.GOOGLE_LOGIN_DISABLED_MESSAGE)
+            .Which.Errors.Should().BeEmpty();
+        AuthService.GOOGLE_LOGIN_DISABLED_MESSAGE.Should().Be("Login com Google não está habilitado neste ambiente.");
+        _google.Verify(g => g.ValidateAsync(It.IsAny<string>()), Times.Never);
+        _users.Verify(r => r.InsertAsync(It.IsAny<User>()), Times.Never);
+    }
+
+    [Fact]
+    public async Task GoogleLoginAsync_ShouldThrowNotFound_WhenClientIdIsNotConfiguredEvenWithEmptyToken()
+    {
+        var sut = CreateSut(string.Empty);
+
+        var act = () => sut.GoogleLoginAsync(new GoogleLoginInfo { IdToken = "" });
+
+        await act.Should().ThrowAsync<NotFoundException>();
+        _google.Verify(g => g.ValidateAsync(It.IsAny<string>()), Times.Never);
+    }
+
+    [Fact]
+    public async Task GoogleLoginAsync_ShouldValidateTokenWithGoogle_WhenClientIdIsConfigured()
+    {
+        _google.Setup(g => g.ValidateAsync("ok"))
+            .ReturnsAsync(new GoogleUserInfo { Subject = "google-999", Email = "bia@ex.com", Name = "Bia" });
+
+        var result = await _sut.GoogleLoginAsync(new GoogleLoginInfo { IdToken = "ok" });
+
+        result.Token.Should().Be("jwt");
+        result.IsNewUser.Should().BeTrue();
+        _google.Verify(g => g.ValidateAsync("ok"), Times.Once);
     }
 
     [Fact]

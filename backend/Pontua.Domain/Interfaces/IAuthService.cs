@@ -11,7 +11,7 @@ public interface IAuthService
     /// <summary>Entrada por e-mail e senha; qualquer falha de credencial → 401 genérico.</summary>
     Task<AuthResult> LoginAsync(LoginInfo info);
 
-    /// <summary>Entrada com a conta Google: cria a conta ou vincula por e-mail; token inválido → 401.</summary>
+    /// <summary>Entrada com a conta Google: cria a conta ou vincula por e-mail; token inválido → 401; sem <c>Google:ClientId</c> → 404 (desabilitado).</summary>
     Task<AuthResult> GoogleLoginAsync(GoogleLoginInfo info);
 
     Task<UserInfo> GetMeAsync(long userId);
