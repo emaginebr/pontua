@@ -1,0 +1,50 @@
+# Roteamento público de pontua.site. Os caminhos chegam à API com o prefixo original (sem rewrite).
+# - Sem TLS: o HTTPS termina na Cloudflare e o túnel chega aqui por HTTP.
+# - Só o host principal. O www NÃO entra aqui nem no túnel: uma Redirect Rule da Cloudflare faz o
+#   301 www → pontua.site na borda. Não use `from-to-www-redirect`: atrás do túnel ele gera
+#   https://pontua.site:80/.
+# - /api e /health vão para a API; o resto (/) para o PWA (nginx). O Pontua não tem SSE/streaming.
+# - `pathType: Prefix` casa por SEGMENTO (/api casa /api e /api/x, não /apix). Para caminhos que
+#   não são um segmento inteiro, liste cada caminho exato com Prefix, por exemplo:
+#       - path: /.well-known/<documento-1>
+#         pathType: Prefix
+#         backend: { service: { name: pontua-api, port: { number: 8080 } } }
+#       - path: /.well-known/<documento-2>
+#         pathType: Prefix
+#         backend: { service: { name: pontua-api, port: { number: 8080 } } }
+#   NÃO use `ImplementationSpecific` para prefixo de texto (ex.: `/.well-known/doc-`): o caminho
+#   cai na rota `/` (SPA) e responde 502/404.
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: pontua
+  annotations:
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    nginx.ingress.kubernetes.io/proxy-body-size: "10m"
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: pontua.site
+      http:
+        paths:
+          - path: /api
+            pathType: Prefix
+            backend:
+              service:
+                name: pontua-api
+                port:
+                  number: 8080
+          - path: /health
+            pathType: Prefix
+            backend:
+              service:
+                name: pontua-api
+                port:
+                  number: 8080
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: pontua-web
+                port:
+                  number: 80

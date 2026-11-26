@@ -1,0 +1,15 @@
+# Configuração NÃO secreta da API, injetada como variáveis de ambiente (envFrom). Segredos ficam no
+# Secret pontua-api-secrets, criado pela pipeline. Domínio, CORS e URL do frontend já estão em
+# backend/Pontua.API/appsettings.Production.json.
+# - ASPNETCORE_FORWARDEDHEADERS_ENABLED: a API não chama UseForwardedHeaders no código; com isto o
+#   Kestrel confia em X-Forwarded-For/Proto vindos do ingress (o Service é ClusterIP).
+# - Database__MigrateOnStartup: com 1 réplica, as migrations rodam no startup do pod (a startupProbe
+#   dá até 5 min). Antes de subir para mais de 1 réplica, mover as migrations para um Job.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: pontua-api-env
+data:
+  ASPNETCORE_ENVIRONMENT: Production
+  ASPNETCORE_FORWARDEDHEADERS_ENABLED: "true"
+  Database__MigrateOnStartup: "true"
