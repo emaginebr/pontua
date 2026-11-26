@@ -18,8 +18,8 @@ public class GoogleTokenAppService : IGoogleTokenAppService
 
     public async Task<GoogleUserInfo?> ValidateAsync(string idToken)
     {
-        // Configuração ausente é erro do servidor (500), não do token.
-        if (string.IsNullOrWhiteSpace(_settings.ClientId))
+        // Salvaguarda: o AuthService já responde 404 quando o login Google está desabilitado e não chega aqui.
+        if (!_settings.IsEnabled)
             throw new InvalidOperationException("Google:ClientId não configurado: login Google indisponível.");
         if (string.IsNullOrWhiteSpace(idToken))
             return null;

@@ -8,7 +8,7 @@ import { companyInfo, companySummary, memberInfo, renderRouteReady, seedSession 
 import type { InvitationInfo } from "../../types/invitation";
 import type { PositionInfo } from "../../types/position";
 
-const URL_ATENDENTE = "https://app.pontua.com.br/convite/q3Xy_8-abcdefghijklmnopqrstuvwxyz0123456789";
+const URL_ATENDENTE = "https://pontua.site/convite/q3Xy_8-abcdefghijklmnopqrstuvwxyz0123456789";
 
 const invitation = (overrides: Partial<InvitationInfo> = {}): InvitationInfo => ({
   invitationId: 5,

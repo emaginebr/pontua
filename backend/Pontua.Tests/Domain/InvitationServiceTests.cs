@@ -25,7 +25,7 @@ public class InvitationServiceTests
     private const long NEW_USER = 20;
     private const long FORMER_USER = 21;
     private const long ATENDENTE = 40;
-    private const string BASE_URL = "https://app.pontua.com.br/";
+    private const string BASE_URL = "https://pontua.site/";
 
     private readonly Mock<IInvitationRepository<Invitation>> _invitations = new();
     private readonly Mock<ICompanyRepository<Company>> _companies = new();
@@ -143,7 +143,7 @@ public class InvitationServiceTests
     {
         var info = await _sut.CreateAsync(COMPANY, OWNER_USER, new InvitationInsertInfo { PositionId = ATENDENTE });
 
-        info.Url.Should().Be($"https://app.pontua.com.br/convite/{info.Token}");
+        info.Url.Should().Be($"https://pontua.site/convite/{info.Token}");
         info.Token.Should().HaveLength(43).And.MatchRegex("^[A-Za-z0-9_-]+$");
         info.ExpiresAt.Should().Be(NOW.AddDays(7));
         info.Status.Should().Be(InvitationStatuses.ACTIVE);
@@ -382,7 +382,7 @@ public class InvitationServiceTests
 
         all.Select(i => i.Status).Should().BeEquivalentTo(new[] { "active", "expired", "revoked" });
         expired.Should().ContainSingle().Which.Status.Should().Be("expired");
-        all.Should().AllSatisfy(i => i.Url.Should().StartWith("https://app.pontua.com.br/convite/"));
+        all.Should().AllSatisfy(i => i.Url.Should().StartWith("https://pontua.site/convite/"));
     }
 
     [Fact]
